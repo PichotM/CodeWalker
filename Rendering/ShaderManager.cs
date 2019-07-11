@@ -777,7 +777,6 @@ namespace CodeWalker.Rendering
             RenderWaterQuads.Add(waterquad);
         }
 
-
         public ShaderRenderBucket EnsureRenderBucket(int index)
         {
             ShaderRenderBucket bucket = null;

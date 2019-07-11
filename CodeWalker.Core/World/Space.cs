@@ -40,13 +40,15 @@ namespace CodeWalker.World
 
         public SpaceNavGrid NavGrid;
 
-        public List<SpaceEntityCollision> Collisions = new List<SpaceEntityCollision>(); 
+        public List<SpaceEntityCollision> Collisions = new List<SpaceEntityCollision>();
+
+        private bool OnlyMods = false;
 
 
-        public void Init(GameFileCache gameFileCache, Action<string> updateStatus)
+        public void Init(GameFileCache gameFileCache, Action<string> updateStatus, bool onlyMods)
         {
             GameFileCache = gameFileCache;
-
+            OnlyMods = onlyMods;
 
             updateStatus("Scanning manifests...");
 
@@ -418,6 +420,7 @@ namespace CodeWalker.World
             Dictionary<uint, RpfFileEntry> yndentries = new Dictionary<uint, RpfFileEntry>();
             foreach (var rpffile in GameFileCache.BaseRpfs) //load nodes from base rpfs
             {
+                if (OnlyMods && !rpffile.FilePath.Contains("mods")) { continue; }
                 AddRpfYnds(rpffile, yndentries);
             }
             if (GameFileCache.EnableDlc)
@@ -427,6 +430,7 @@ namespace CodeWalker.World
                 {
                     foreach (var rpffile in updrpf.Children)
                     {
+                        if (OnlyMods && !rpffile.FilePath.Contains("mods")) { continue; }
                         AddRpfYnds(rpffile, yndentries);
                     }
                 }
@@ -435,6 +439,7 @@ namespace CodeWalker.World
                     if (dlcrpf.Path.StartsWith("x64")) continue; //don't override update.rpf YNDs with x64 ones! *hack
                     foreach (var rpffile in dlcrpf.Children)
                     {
+                        if (OnlyMods && !rpffile.FilePath.Contains("mods")) { continue; }
                         AddRpfYnds(rpffile, yndentries);
                     }
                 }
@@ -718,11 +723,12 @@ namespace CodeWalker.World
         private void InitNavGrid()
         {
             NavGrid = new SpaceNavGrid();
-
+            
             var rpfman = GameFileCache.RpfMan;
             Dictionary<uint, RpfFileEntry> ynventries = new Dictionary<uint, RpfFileEntry>();
             foreach (var rpffile in GameFileCache.BaseRpfs) //load navmeshes from base rpfs
             {
+                if (OnlyMods && !rpffile.FilePath.Contains("mods")) { continue; }
                 AddRpfYnvs(rpffile, ynventries);
             }
             if (GameFileCache.EnableDlc)
@@ -732,6 +738,7 @@ namespace CodeWalker.World
                 {
                     foreach (var rpffile in updrpf.Children)
                     {
+                        if (OnlyMods && !rpffile.FilePath.Contains("mods")) { continue; }
                         AddRpfYnvs(rpffile, ynventries);
                     }
                 }
@@ -739,6 +746,7 @@ namespace CodeWalker.World
                 {
                     foreach (var rpffile in dlcrpf.Children)
                     {
+                        if (OnlyMods && !rpffile.FilePath.Contains("mods")) { continue; }
                         AddRpfYnvs(rpffile, ynventries);
                     }
                 }

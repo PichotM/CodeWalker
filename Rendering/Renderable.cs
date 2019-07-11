@@ -1274,7 +1274,6 @@ namespace CodeWalker.Rendering
 
     }
 
-
     public class RenderableBoundComposite : RenderableCacheItem<BoundComposite>
     {
         public RenderableBoundGeometry[] Geometries;

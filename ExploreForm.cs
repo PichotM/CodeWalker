@@ -644,7 +644,8 @@ namespace CodeWalker
 
             foreach (var path in allpaths)
             {
-                var relpath = path.Replace(fullPath, "");
+                var relpath = path.Replace(fullPath, "");                
+
                 var filepathl = path.ToLowerInvariant();
 
                 var isFile = File.Exists(path); //could be a folder

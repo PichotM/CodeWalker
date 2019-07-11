@@ -82,6 +82,7 @@ namespace CodeWalker.Project.Panels
                 //YndNodePanel.Enabled = true;
                 PathNodeDeleteButton.Enabled = ProjectForm.YndExistsInProject(CurrentYndFile);
                 PathNodeAddToProjectButton.Enabled = !PathNodeDeleteButton.Enabled;
+
                 var streetname = GlobalText.TryGetString(n.StreetName.Hash);
                 PathNodeAreaIDUpDown.Value = n.AreaID;
                 PathNodeNodeIDUpDown.Value = n.NodeID;
@@ -97,7 +98,10 @@ namespace CodeWalker.Project.Panels
                 {
                     foreach (var link in CurrentPathNode.Links)
                     {
-                        PathNodeLinksListBox.Items.Add(link);
+                        if (link != null && PathNodeLinksListBox.Items != null)
+                        {
+                            PathNodeLinksListBox.Items.Add(link);
+                        }
                     }
                 }
                 populatingui = false;
@@ -108,6 +112,7 @@ namespace CodeWalker.Project.Panels
                     ProjectForm.WorldForm.SelectPathNode(CurrentPathNode);
                 }
 
+                //applyTemplate();
             }
         }
 
@@ -1251,6 +1256,46 @@ namespace CodeWalker.Project.Panels
                 ProjectForm.SetYndHasChanged(true);
             }
             //LoadPathNodeJunctionPage();
+        }
+
+        private void templateButton_Click(object sender, EventArgs e)
+        {
+            // Appliquer notre template
+            // Dans l'ordre
+            PathNodeFlags0UpDown.Value = 2;
+            PathNodeFlags1UpDown.Value = 0;
+            PathNodeFlags2UpDown.Value = 64;
+            PathNodeFlags4UpDown.Value = 14;
+
+            PathNodeFlags3UpDown.Value = 150;
+            PathNodeFlags5UpDown.Value = 4;
+
+            SetPathNodeFlagsFromUpDowns();
+        }        
+
+        private void applyTemplate()
+        {
+            PathNodeFlags0UpDown.Value = 2;
+            PathNodeFlags1UpDown.Value = 0;
+            PathNodeFlags2UpDown.Value = 144;
+            PathNodeFlags4UpDown.Value = 113;
+
+            PathNodeFlags3UpDown.Value = 74;
+            PathNodeFlags5UpDown.Value = 2;
+
+            SetPathNodeFlagsFromUpDowns();
+        }
+
+        private void junctionButton_Click(object sender, EventArgs e)
+        {
+            PathNodeFlags1UpDown.Value = 80;
+            SetPathNodeFlagsFromUpDowns();
+        }
+
+        private void outerButton_Click(object sender, EventArgs e)
+        {
+            PathNodeFlags1UpDown.Value = 120;
+            SetPathNodeFlagsFromUpDowns();
         }
     }
 }

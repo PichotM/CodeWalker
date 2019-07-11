@@ -1,4 +1,6 @@
-﻿namespace CodeWalker.Project.Panels
+﻿using System.Windows.Forms;
+
+namespace CodeWalker.Project.Panels
 {
     partial class EditYndNodePanel
     {
@@ -31,6 +33,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditYndNodePanel));
             this.PathNodeTabControl = new System.Windows.Forms.TabControl();
             this.PathNodePropertiesTabPage = new System.Windows.Forms.TabPage();
+            this.templateButton = new System.Windows.Forms.Button();
             this.PathNodeFlags5GroupBox = new System.Windows.Forms.GroupBox();
             this.PathNodeFlags52CheckBox = new System.Windows.Forms.CheckBox();
             this.PathNodeFlags53CheckBox = new System.Windows.Forms.CheckBox();
@@ -157,6 +160,8 @@
             this.PathNodeJunctionMaxZUpDown = new System.Windows.Forms.NumericUpDown();
             this.label65 = new System.Windows.Forms.Label();
             this.PathNodeJunctionEnableCheckBox = new System.Windows.Forms.CheckBox();
+            this.junctionButton = new System.Windows.Forms.Button();
+            this.outerButton = new System.Windows.Forms.Button();
             this.PathNodeTabControl.SuspendLayout();
             this.PathNodePropertiesTabPage.SuspendLayout();
             this.PathNodeFlags5GroupBox.SuspendLayout();
@@ -221,6 +226,9 @@
             // 
             // PathNodePropertiesTabPage
             // 
+            this.PathNodePropertiesTabPage.Controls.Add(this.outerButton);
+            this.PathNodePropertiesTabPage.Controls.Add(this.junctionButton);
+            this.PathNodePropertiesTabPage.Controls.Add(this.templateButton);
             this.PathNodePropertiesTabPage.Controls.Add(this.PathNodeFlags5GroupBox);
             this.PathNodePropertiesTabPage.Controls.Add(this.PathNodeFlags4GroupBox);
             this.PathNodePropertiesTabPage.Controls.Add(this.PathNodeFlags3GroupBox);
@@ -246,6 +254,17 @@
             this.PathNodePropertiesTabPage.TabIndex = 2;
             this.PathNodePropertiesTabPage.Text = "Node Properties";
             this.PathNodePropertiesTabPage.UseVisualStyleBackColor = true;
+            // 
+            // templateButton
+            // 
+            this.templateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.templateButton.Location = new System.Drawing.Point(322, 65);
+            this.templateButton.Name = "templateButton";
+            this.templateButton.Size = new System.Drawing.Size(90, 23);
+            this.templateButton.TabIndex = 49;
+            this.templateButton.Text = "Reset template";
+            this.templateButton.UseVisualStyleBackColor = true;
+            this.templateButton.Click += new System.EventHandler(this.templateButton_Click);
             // 
             // PathNodeFlags5GroupBox
             // 
@@ -1748,6 +1767,28 @@
             this.PathNodeJunctionEnableCheckBox.UseVisualStyleBackColor = true;
             this.PathNodeJunctionEnableCheckBox.CheckedChanged += new System.EventHandler(this.PathNodeJunctionEnableCheckBox_CheckedChanged);
             // 
+            // junctionButton
+            // 
+            this.junctionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.junctionButton.Location = new System.Drawing.Point(370, 272);
+            this.junctionButton.Name = "junctionButton";
+            this.junctionButton.Size = new System.Drawing.Size(115, 23);
+            this.junctionButton.TabIndex = 50;
+            this.junctionButton.Text = "Junction";
+            this.junctionButton.UseVisualStyleBackColor = true;
+            this.junctionButton.Click += new System.EventHandler(this.junctionButton_Click);
+            // 
+            // outerButton
+            // 
+            this.outerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.outerButton.Location = new System.Drawing.Point(370, 301);
+            this.outerButton.Name = "outerButton";
+            this.outerButton.Size = new System.Drawing.Size(115, 23);
+            this.outerButton.TabIndex = 51;
+            this.outerButton.Text = "Outer node";
+            this.outerButton.UseVisualStyleBackColor = true;
+            this.outerButton.Click += new System.EventHandler(this.outerButton_Click);
+            // 
             // EditYndNodePanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1951,5 +1992,8 @@
         private System.Windows.Forms.NumericUpDown PathNodeJunctionMaxZUpDown;
         private System.Windows.Forms.Label label65;
         private System.Windows.Forms.CheckBox PathNodeJunctionEnableCheckBox;
+        private System.Windows.Forms.Button templateButton;
+        private Button outerButton;
+        private Button junctionButton;
     }
 }

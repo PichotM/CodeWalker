@@ -403,7 +403,7 @@ namespace CodeWalker.Project.Panels
 
                     if (CurrentEntity.MloParent != null)
                     {
-                        var world = Quaternion.Normalize(Quaternion.Multiply(q, CurrentEntity.MloParent.Orientation));
+                        var world = Quaternion.Normalize(Quaternion.Multiply(CurrentEntity.MloParent.Orientation, q));
                         CurrentEntity.SetOrientation(world);
                     }
                     else

@@ -192,5 +192,8 @@
     <Setting Name="ExplorerWindowTheme" Type="System.String" Scope="User">
       <Value Profile="(Default)">Windows</Value>
     </Setting>
+    <Setting Name="OnlyMods" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

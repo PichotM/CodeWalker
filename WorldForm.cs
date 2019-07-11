@@ -763,7 +763,7 @@ namespace CodeWalker
             UpdateMouseHits(renderwaterquadlist);
 
         }
-
+        
         private void RenderWorldPaths()
         {
             renderpathynds.Clear();
@@ -4114,8 +4114,7 @@ namespace CodeWalker
 
 
         private void LoadWorld()
-        {
-
+        {            
             UpdateStatus("Loading timecycles...");
             timecycle.Init(gameFileCache, UpdateStatus);
             timecycle.SetTime(Renderer.timeofday);
@@ -4147,7 +4146,7 @@ namespace CodeWalker
             audiozones.Init(gameFileCache, UpdateStatus);
 
             UpdateStatus("Loading world...");
-            space.Init(gameFileCache, UpdateStatus);
+            space.Init(gameFileCache, UpdateStatus, Settings.Default.OnlyMods);
 
             UpdateStatus("World loaded");
 
@@ -4226,12 +4225,8 @@ namespace CodeWalker
             UpdateDlcListComboBox(gameFileCache.DlcNameList);
 
             EnableCacheDependentUI();
-
-
-
+       
             LoadWorld();
-
-
 
             initialised = true;
 
@@ -5067,6 +5062,11 @@ namespace CodeWalker
             ShowProjectForm();
             ProjectForm.NewAudioFile();
         }
+        private void NewYtyp()
+        {
+            ShowProjectForm();
+            ProjectForm.NewYtyp();
+        }
         private void Open()
         {
             ShowProjectForm();
@@ -5114,6 +5114,11 @@ namespace CodeWalker
         {
             ShowProjectForm();
             ProjectForm.OpenAudioFile();
+        }
+        private void OpenYtyp()
+        {
+            ShowProjectForm();
+            ProjectForm.OpenYtyp();
         }
         private void Save()
         {
@@ -7444,6 +7449,11 @@ namespace CodeWalker
             NewScenario();
         }
 
+        private void newYtypToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewYtyp();
+        }
+
         private void ToolbarOpenButton_ButtonClick(object sender, EventArgs e)
         {
             Open();
@@ -7472,6 +7482,11 @@ namespace CodeWalker
         private void ToolbarOpenScenarioButton_Click(object sender, EventArgs e)
         {
             OpenScenario();
+        }
+
+        private void openYtypToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenYtyp();
         }
 
         private void ToolbarSaveButton_Click(object sender, EventArgs e)
@@ -7585,7 +7600,7 @@ namespace CodeWalker
             SetSelectionMode("Occlusion");
             SetMouseSelect(true);
         }
-
+        
         private void ToolbarMoveButton_Click(object sender, EventArgs e)
         {
             SetWidgetMode(ToolbarMoveButton.Checked ? "Default" : "Position");
@@ -7831,6 +7846,16 @@ namespace CodeWalker
         {
             var statsForm = new StatisticsForm(this);
             statsForm.Show(this);
+        }
+
+        private void waterQuadRefresh_Click(object sender, EventArgs e)
+        {
+            gameFileCache.Init(UpdateStatus, Console.WriteLine);
+
+            Thread.Sleep(4000);
+
+            UpdateStatus("Loading water...");
+            water.Init(gameFileCache, UpdateStatus);
         }
     }
 

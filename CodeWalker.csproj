@@ -91,6 +91,13 @@
     <ApplicationIcon>Resources\CW.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodeWalker.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>CodeWalker.Core\bin\Debug\CodeWalker.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscordRPC">
+      <HintPath>..\..\Projets\DiscordRPC.dll</HintPath>
+    </Reference>
     <Reference Include="FastColoredTextBox, Version=2.16.24.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
       <HintPath>packages\FCTB.2.16.24\lib\FastColoredTextBox.dll</HintPath>
     </Reference>
@@ -835,10 +842,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="CodeWalker.Core\CodeWalker.Core.csproj">
-      <Project>{de50d3a6-b49e-47a0-abe6-101473a00759}</Project>
-      <Name>CodeWalker.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="CodeWalker.WinForms\CodeWalker.WinForms.csproj">
       <Project>{9702c58d-f52f-45cf-9456-9ce5af40f5c3}</Project>
       <Name>CodeWalker.WinForms</Name>

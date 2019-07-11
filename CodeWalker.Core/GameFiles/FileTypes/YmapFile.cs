@@ -1485,7 +1485,7 @@ namespace CodeWalker.GameFiles
                 Quaternion rel = Quaternion.Normalize(Quaternion.Multiply(mloInv, ori));
                 Quaternion inv = Quaternion.Normalize(Quaternion.Invert(rel));
                 Orientation = ori;
-                _CEntityDef.rotation = inv.ToVector4();
+                _CEntityDef.rotation = rel.ToVector4();
             }
             else
             {

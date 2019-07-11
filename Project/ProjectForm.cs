@@ -5142,6 +5142,7 @@ namespace CodeWalker.Project
                 quads.Clear();
             }
         }
+        
         public void GetVisibleYnds(Camera camera, List<YndFile> ynds)
         {
             if (hidegtavmap)

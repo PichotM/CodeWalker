@@ -93,6 +93,7 @@ namespace CodeWalker.GameFiles
 
         private string GTAFolder;
         private string ExcludeFolders;
+        private bool OnlyMods = false;
 
 
 
@@ -120,7 +121,7 @@ namespace CodeWalker.GameFiles
 
 
 
-        public GameFileCache(long size, double cacheTime, string folder, string dlc, bool mods, string excludeFolders)
+        public GameFileCache(long size, double cacheTime, string folder, string dlc, bool mods, string excludeFolders, bool onlyMods)
         {
             mainCache = new Cache<GameFileCacheKey, GameFile>(size, cacheTime);//2GB is good as default
             SelectedDlc = dlc;
@@ -128,6 +129,7 @@ namespace CodeWalker.GameFiles
             EnableMods = mods;
             GTAFolder = folder;
             ExcludeFolders = excludeFolders;
+            OnlyMods = onlyMods;
         }
 
 
@@ -439,42 +441,43 @@ namespace CodeWalker.GameFiles
         {
             //currently not used..
 
-            ////parse images.meta
-            //string imagesmetapath = "common.rpf\\data\\levels\\gta5\\images.meta";
-            //if (EnableDlc)
-            //{
-            //    imagesmetapath = "update\\update.rpf\\common\\data\\levels\\gta5\\images.meta";
-            //}
-            //var imagesmetaxml = RpfMan.GetFileXml(imagesmetapath);
-            //var imagesnodes = imagesmetaxml.DocumentElement.ChildNodes;
-            //List<DlcContentDataFile> imagedatafilelist = new List<DlcContentDataFile>();
-            //Dictionary<string, DlcContentDataFile> imagedatafiles = new Dictionary<string, DlcContentDataFile>();
-            //foreach (XmlNode node in imagesnodes)
-            //{
-            //    DlcContentDataFile datafile = new DlcContentDataFile(node);
-            //    string fname = datafile.filename.ToLower();
-            //    fname = fname.Replace('\\', '/');
-            //    imagedatafiles[fname] = datafile;
-            //    imagedatafilelist.Add(datafile);
-            //}
-
+            ///parse images.meta
+            string imagesmetapath = "common.rpf\\data\\levels\\gta5\\images.meta";
+            if (EnableDlc)
+            {
+                imagesmetapath = "update\\update.rpf\\common\\data\\levels\\gta5\\images.meta";
+            }
+            var imagesmetaxml = RpfMan.GetFileXml(imagesmetapath);
+            var imagesnodes = imagesmetaxml.DocumentElement.ChildNodes;
+            List<DlcContentDataFile> imagedatafilelist = new List<DlcContentDataFile>();
+            Dictionary<string, DlcContentDataFile> imagedatafiles = new Dictionary<string, DlcContentDataFile>();
+            foreach (XmlNode node in imagesnodes)
+            {
+                DlcContentDataFile datafile = new DlcContentDataFile(node);
+                string fname = datafile.filename.ToLower();
+                fname = fname.Replace('\\', '/');
+                imagedatafiles[fname] = datafile;
+                imagedatafilelist.Add(datafile);
+            }
 
             //filter ActiveMapFiles based on images.meta?
-
-                        //DlcContentDataFile imagesdata;
-                        //if (imagedatafiles.TryGetValue(path, out imagesdata))
-                        //{
-                        //    ActiveMapRpfFiles[path] = baserpf;
-                        //}
+            //DlcContentDataFile imagesdata;
+            /*if (imagedatafiles.TryGetValue(path, out imagesdata))
+            {
+                ActiveMapRpfFiles[path] = baserpf;
+            }*/
         }
-
+        
         private void InitActiveMapRpfFiles()
         {
             ActiveMapRpfFiles.Clear();
+            Console.WriteLine("REACHING INIT MAP RPF FILES.");
 
             foreach (RpfFile baserpf in BaseRpfs) //start with all the base rpf's (eg x64a.rpf)
             {
                 string path = baserpf.Path.Replace('\\', '/');
+                //Console.WriteLine(path);
+                
                 if (path == "common.rpf")
                 {
                     ActiveMapRpfFiles["common"] = baserpf;
@@ -485,7 +488,6 @@ namespace CodeWalker.GameFiles
                     if ((bsind > 0) && (bsind < path.Length))
                     {
                         path = "x64" + path.Substring(bsind);
-
                         //if (ActiveMapRpfFiles.ContainsKey(path))
                         //{ } //x64d.rpf\levels\gta5\generic\cutsobjects.rpf // x64g.rpf\levels\gta5\generic\cutsobjects.rpf - identical?
 
@@ -498,19 +500,19 @@ namespace CodeWalker.GameFiles
                     }
                 }
             }
-
+            
             if (!EnableDlc) return; //don't continue for base title only
+            Console.WriteLine("Yoooooo");
 
             foreach (var rpf in DlcRpfs)
             {
                 if (rpf.NameLower == "update.rpf")//include this so that files not in child rpf's can be used..
-                {
+                {         
                     string path = rpf.Path.Replace('\\', '/');
                     ActiveMapRpfFiles[path] = rpf;
                     break;
                 }
             }
-
 
             DlcActiveRpfs.Clear();
             DlcCacheFileList.Clear();
@@ -520,15 +522,15 @@ namespace CodeWalker.GameFiles
             Dictionary<string, List<string>> overlays = new Dictionary<string, List<string>>();
 
             foreach(var setupfile in DlcSetupFiles)
-            { 
-                if(setupfile.DlcFile!=null)
+            {
+                if (setupfile.DlcFile!=null)
                 {
                     //if (setupfile.order > maxdlcorder)
                     //    break;
 
                     var contentfile = setupfile.ContentFile;
                     var dlcfile = setupfile.DlcFile;
-
+                                        
                     DlcActiveRpfs.Add(dlcfile);
 
                     for (int i = 1; i <= setupfile.subPackCount; i++)
@@ -544,12 +546,8 @@ namespace CodeWalker.GameFiles
                         }
                     }
 
-
-
                     string dlcname = GetDlcNameFromPath(dlcfile.Path);
-
-
-
+                    
                     foreach (var rpfkvp in contentfile.RpfDataFiles)
                     {
                         string umpath = GetDlcUnmountedPath(rpfkvp.Value.filename);
@@ -560,9 +558,6 @@ namespace CodeWalker.GameFiles
 
                         AddDlcActiveMapRpfFile(rpfkvp.Key, phpath, setupfile);
                     }
-
-
-
 
                     DlcExtraFolderMountFile extramount;
                     DlcContentDataFile rpfdatafile;
@@ -670,9 +665,6 @@ namespace CodeWalker.GameFiles
                             }
                         }
                     }
-
-
-
 
                     if (dlcname == SelectedDlc)
                     {
@@ -951,6 +943,9 @@ namespace CodeWalker.GameFiles
             YmapDict = new Dictionary<uint, RpfFileEntry>();
             YbnDict = new Dictionary<uint, RpfFileEntry>();
             YnvDict = new Dictionary<uint, RpfFileEntry>();
+
+            Console.WriteLine("CALLED HERE");
+            
             foreach (var rpffile in ActiveMapRpfFiles.Values) //RpfMan.BaseRpfs)
             {
                 if (rpffile.AllEntries == null) continue;
@@ -961,6 +956,7 @@ namespace CodeWalker.GameFiles
                         RpfFileEntry fentry = entry as RpfFileEntry;
                         if (entry.NameLower.EndsWith(".ymap"))
                         {
+                            if (OnlyMods && !entry.Path.Contains("mods")) { continue; }
                             //YmapDict[entry.NameHash] = fentry;
                             YmapDict[entry.ShortNameHash] = fentry;
                         }
@@ -988,6 +984,7 @@ namespace CodeWalker.GameFiles
                         RpfFileEntry fentry = entry as RpfFileEntry;
                         if (entry.NameLower.EndsWith(".ymap"))
                         {
+                            if (OnlyMods && !entry.Path.Contains("mods")) { continue; }
                             AllYmapsDict[entry.ShortNameHash] = fentry;
                         }
                     }
@@ -2360,13 +2357,7 @@ namespace CodeWalker.GameFiles
             }
             return exclpaths;
         }
-
-
-
-
-
-
-
+        
         public void TestAudioRels()
         {
             UpdateStatus("Testing Audio REL files");

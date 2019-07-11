@@ -874,6 +874,7 @@ namespace CodeWalker
         PopZone = 15,
         Audio = 16,
         Occlusion = 17,
+        CalmWaterQuad = 18,
     }
 
 

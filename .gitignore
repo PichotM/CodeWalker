@@ -169,6 +169,7 @@ rcf/
 # Windows Store app package directory
 AppPackages/
 BundleArtifacts/
+Shaders/
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -241,3 +242,6 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /Toolbar/cammodes.psd
+
+*.sln
+*.cso

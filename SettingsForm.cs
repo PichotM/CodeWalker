@@ -81,6 +81,7 @@ namespace CodeWalker
             GeometryCacheSizeUpDown.Value = Math.Min(Math.Max(Settings.Default.GPUGeometryCacheSize / 1048576, GeometryCacheSizeUpDown.Minimum), GeometryCacheSizeUpDown.Maximum);
             TextureCacheSizeUpDown.Value = Math.Min(Math.Max(Settings.Default.GPUTextureCacheSize / 1048576, TextureCacheSizeUpDown.Minimum), TextureCacheSizeUpDown.Maximum);
             CollisionCacheSizeUpDown.Value = Math.Min(Math.Max(Settings.Default.GPUBoundCompCacheSize / 1048576, CollisionCacheSizeUpDown.Minimum), CollisionCacheSizeUpDown.Maximum);
+            checkboxMods.Checked = Settings.Default.OnlyMods;
         }
 
 
@@ -280,7 +281,7 @@ namespace CodeWalker
         {
             Settings.Default.ExcludeFolders = ExcludeFoldersTextBox.Text;
         }
-
+        
         private void ShadowCascadesUpDown_ValueChanged(object sender, EventArgs e)
         {
             Settings.Default.ShadowCascades = (int)ShadowCascadesUpDown.Value;
@@ -319,6 +320,11 @@ namespace CodeWalker
         private void CollisionCacheSizeUpDown_ValueChanged(object sender, EventArgs e)
         {
             Settings.Default.GPUBoundCompCacheSize = (long)CollisionCacheSizeUpDown.Value * 1048576;
+        }
+
+        private void checkboxMods_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Default.OnlyMods = checkboxMods.Checked;
         }
     }
 }

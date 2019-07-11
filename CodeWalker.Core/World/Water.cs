@@ -16,18 +16,22 @@ namespace CodeWalker.World
         public List<WaterQuad> WaterQuads = new List<WaterQuad>();
         public List<WaterCalmingQuad> CalmingQuads = new List<WaterCalmingQuad>();
         public List<WaterWaveQuad> WaveQuads = new List<WaterWaveQuad>();
-
+        
         public void Init(GameFileCache gameFileCache, Action<string> updateStatus)
         {
             GameFileCache = gameFileCache;
 
             var rpfman = gameFileCache.RpfMan;
+                   
+            XmlDocument doc = new XmlDocument();
+            doc.Load("F://Program Files//Rockstar Games//Grand Theft Auto V//mods//water.xml");
 
-            string filename = "common.rpf\\data\\levels\\gta5\\water.xml";
-
-            XmlDocument waterxml = rpfman.GetFileXml(filename);
-
-            XmlElement waterdata = waterxml.DocumentElement;
+            XmlElement waterdata = doc.DocumentElement;
+            if (waterdata == null)
+            {
+                Console.WriteLine("NULL");
+                return;
+            }
 
             XmlNodeList waterquads = waterdata.SelectNodes("WaterQuads/Item");
             WaterQuads.Clear();
@@ -63,7 +67,7 @@ namespace CodeWalker.World
 
         public void GetVisibleQuads(Camera camera, List<WaterQuad> quads)
         {
-            if (!Inited) return;
+            if (!Inited || camera.Position == null) return;
 
             var vf = camera.ViewFrustum;
             for (int i = 0; i < WaterQuads.Count; i++)
@@ -77,7 +81,6 @@ namespace CodeWalker.World
                 }
             }
         }
-
     }
 
 
@@ -160,7 +163,7 @@ namespace CodeWalker.World
             maxX = Xml.GetChildFloatAttribute(node, "maxX", "value");
             minY = Xml.GetChildFloatAttribute(node, "minY", "value");
             maxY = Xml.GetChildFloatAttribute(node, "maxY", "value");
-            fDampening = Xml.GetChildFloatAttribute(node, "fDampening", "value");
+            fDampening = Xml.GetChildFloatAttribute(node, "fDampening", "value");            
 
             /*
             <minX value="1752" />

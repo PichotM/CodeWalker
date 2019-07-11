@@ -1381,8 +1381,6 @@ namespace CodeWalker.Rendering
 
         }
 
-
-
         public void RenderWaterQuads(List<WaterQuad> waterquads)
         {
             foreach (var quad in waterquads)
@@ -1395,7 +1393,7 @@ namespace CodeWalker.Rendering
                 }
             }
         }
-
+        
         public void RenderPaths(List<YndFile> ynds)
         {
             foreach (var ynd in ynds)
