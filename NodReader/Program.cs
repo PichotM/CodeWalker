@@ -12,19 +12,34 @@ using SharpDX.Mathematics;
 using SharpDX;
 using CodeWalker;
 
+/*
+ * 
+ * 
+ * 
+ *  RECUPERER BACKUP CAR ECHERCHE FLAG PERDUE/RESET
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
 namespace NodReader
 {
     // TODO PED NODE flag?
     class Program
     {
-        private static double OffsetX = 67.9358;
-        private static double OffsetY = 839.95;
+        //private static double OffsetX = 67.9358;
+       // private static double OffsetY = 839.95;
+        //private static double OffsetZ = 2.90625;
+        private static double OffsetX = 68.05;
+        private static double OffsetY = -177.64;
         private static double OffsetZ = 2.90625;
 
         private static NodeOpenable nodeInfo;
 
         private static List<ImportedNode> NodeList = new List<ImportedNode>();
-        //private static Dictionary<string, ImportedNode[]> NodeList2 = new Dictionary<string, ImportedNode[]>();
         private static Dictionary<string, ImportedLink[]> LinkList = new Dictionary<string, ImportedLink[]>();
         private static Dictionary<int, YndFile> YndFileList = new Dictionary<int, YndFile>();
 
@@ -52,7 +67,7 @@ namespace NodReader
 
         static void Main(string[] args)
         {
-            string pathNode = "F://Users//Pichot//Desktop//TEST_EXPORT//nodes//iv_nodes";
+            string pathNode = "E://Users//Pichot//Downloads//Transfert//nodes_hints//nodes//iv_nodes";
             string[] allNodes = Directory.GetFiles(pathNode);
 
             NodeList.Clear();
@@ -116,25 +131,25 @@ namespace NodReader
                 flags1 = BitUtil.UpdateBit(flags1, 1, false); // L turn no return
                 flags1 = BitUtil.UpdateBit(flags1, 2, false); // R turn no return
                 flags1 = BitUtil.UpdateBit(flags1, 3, false); // Traffic light unk 1 // A
-                flags1 = BitUtil.UpdateBit(flags1, 4, newNode.BehaviourType == 11); // Traffic light unk 2
+                flags1 = BitUtil.UpdateBit(flags1, 4, false); // Traffic light unk 2
                 flags1 = BitUtil.UpdateBit(flags1, 5, false); // Junction unk 3 // A
-                flags1 = BitUtil.UpdateBit(flags1, 6, newNode.BehaviourType == 11); // Traffic light unk 3
+                flags1 = BitUtil.UpdateBit(flags1, 6, false); // Traffic light unk 3
                 flags1 = BitUtil.UpdateBit(flags1, 7, false); // Junction unk 4
 
                 flags2 = BitUtil.UpdateBit(flags2, 0, false); // Slow unk 2
                 flags2 = BitUtil.UpdateBit(flags2, 1, false); // Unused 2
-                flags2 = BitUtil.UpdateBit(flags2, 2, newNode.IsRoadBlock); // Junction unk 5
+                flags2 = BitUtil.UpdateBit(flags2, 2, false); // Junction unk 5
                 flags2 = BitUtil.UpdateBit(flags2, 3, false); // Unused 8
 
                 bool IsPedNode = newNode.BehaviourType == 8;
                 bool backRoad = (newNode.IsRestrictedAccess || newNode.IsWaterNode || newNode.Unk4);
-                flags2 = BitUtil.UpdateBit(flags2, 4, backRoad); // Slow unk 3
-                flags2 = BitUtil.UpdateBit(flags2, 5, newNode.IsWaterNode); // Water/boats
-                flags2 = BitUtil.UpdateBit(flags2, 6, newNode.Speedlimit == 1); // Freeway
-                flags2 = BitUtil.UpdateBit(flags2, 7, backRoad); // Back Road
+                flags2 = BitUtil.UpdateBit(flags2, 4, false); // Slow unk 3
+                flags2 = BitUtil.UpdateBit(flags2, 5, false); // Water/boats
+                flags2 = BitUtil.UpdateBit(flags2, 6, true); // Freeway
+                flags2 = BitUtil.UpdateBit(flags2, 7, false); // Back Road
 
                 flags3 = BitUtil.UpdateBit(flags3, 0, false); // Interior Node
-                flags3 += (((uint)28 & 127u) << 1); // Unk
+                flags3 += (((uint)75 & 127u) << 1); // Unk
 
                 
                 flags4 = BitUtil.UpdateBit(flags4, 0, IsPedNode); // Slow unk 4
@@ -145,8 +160,8 @@ namespace NodReader
                 flags4 = BitUtil.UpdateBit(flags4, 7, false); // Junction unk 6
 
                 flags5 = BitUtil.UpdateBit(flags5, 0, false); // Has junction heightmap
-                flags5 = BitUtil.UpdateBit(flags5, 1, true); // Speed unk 1
-                flags5 = BitUtil.UpdateBit(flags5, 2, false); // Speed unk 2
+                flags5 = BitUtil.UpdateBit(flags5, 1, false); // Speed unk 1
+                flags5 = BitUtil.UpdateBit(flags5, 2, true); // Speed unk 2
 
                 if (IsPedNode)
                 {
@@ -218,8 +233,8 @@ namespace NodReader
 
                                     flags2 = BitUtil.UpdateBit(flags2, 0, false); // Angled/merget link
                                     flags2 = BitUtil.UpdateBit(flags2, 1, false); // Lane change / U-turn
-                                    flags2 += (((uint)targetLink.NumLeftLanes & 7u) << 2); // Back lanes
-                                    flags2 += (((uint)targetLink.NumRightLanes & 7u) << 5); // Fwd lanes
+                                    flags2 += (((uint)targetLink.NumRightLanes & 7u) << 2); // Back lanes
+                                    flags2 += (((uint)targetLink.NumLeftLanes & 7u) << 5); // Fwd lanes
 
                                     newLink.Flags0 = (byte)flags0;
                                     newLink.Flags1 = (byte)flags1;

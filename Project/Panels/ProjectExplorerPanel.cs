@@ -280,16 +280,45 @@ namespace CodeWalker.Project.Panels
                                 MCMloRoomDef room = mlo.rooms[j];
                                 var roomnode = roomsnode.Nodes.Add(room.RoomName);
                                 roomnode.Tag = room;
-                                var entitiesnode = roomnode.Nodes.Add("Attached Objects (" + room.AttachedObjects.Length + ")");
+                                var entitiesnode = roomnode.Nodes.Add("Attached Objects (" + (room.AttachedObjects != null ? room.AttachedObjects.Length : 0) + ")");
                                 entitiesnode.Name = "Attached Objects";
 
-                                for (int k = 0; k < room.AttachedObjects.Length; k++)
+                                if (room.AttachedObjects != null)
                                 {
-                                    uint attachedObject = room.AttachedObjects[k];
-                                    MCEntityDef ent = entities[attachedObject];
-                                    TreeNode entnode = entitiesnode.Nodes.Add(ent.ToString());
-                                    entnode.Tag = ent;
+                                    for (int k = 0; k < room.AttachedObjects.Length; k++)
+                                    {
+                                        uint attachedObject = room.AttachedObjects[k];
+                                        MCEntityDef ent = entities[attachedObject];
+                                        TreeNode entnode = entitiesnode.Nodes.Add(ent.ToString());
+                                        entnode.Tag = ent;
+                                    }
                                 }
+                            }
+
+                            if (mlo.portals.Length > 0)
+                            {
+                                var portalsnode = tarch.Nodes.Add("Portals (" + mlo.portals.Length.ToString() + ")");
+                                portalsnode.Name = "Portals";
+                                for (int j = 0; j < mlo.portals.Length; j++)
+                                {
+                                    MCMloPortalDef portal = mlo.portals[j];
+                                    var roomnode = portalsnode.Nodes.Add(portal.Name);
+                                    roomnode.Tag = portal;
+                                    var entitiesnode = roomnode.Nodes.Add("Attached Objects (" + (portal.AttachedObjects != null ? portal.AttachedObjects.Length : 0) + ")");
+                                    entitiesnode.Name = "Attached Objects";
+
+                                    if (portal.AttachedObjects != null)
+                                    {
+                                        for (int k = 0; k < portal.AttachedObjects.Length; k++)
+                                        {
+                                            uint attachedObject = portal.AttachedObjects[k];
+                                            MCEntityDef ent = entities[attachedObject];
+                                            TreeNode entnode = entitiesnode.Nodes.Add(ent.ToString());
+                                            entnode.Tag = ent;
+                                        }
+                                    }
+                                }
+
                             }
                         }
                     }
@@ -895,10 +924,40 @@ namespace CodeWalker.Project.Panels
             }
             return null;
         }
+        public TreeNode FindMloPortalTreeNode(MCMloPortalDef portal)
+        {
+            if (portal == null) return null;
+
+            TreeNode ytypnode = FindYtypTreeNode(portal.Archetype.Ytyp);
+            if (ytypnode == null) return null;
+
+            TreeNode archetypesnode = GetChildTreeNode(ytypnode, "Archetypes");
+            if (archetypesnode == null) return null;
+
+            for (int i = 0; i < archetypesnode.Nodes.Count; i++)
+            {
+                TreeNode mloarchetypenode = archetypesnode.Nodes[i];
+                if (mloarchetypenode.Tag == portal.Archetype)
+                {
+                    TreeNode portalsnode = GetChildTreeNode(mloarchetypenode, "Portals");
+                    if (portalsnode == null) return null;
+
+                    for (int j = 0; j < portalsnode.Nodes.Count; j++)
+                    {
+                        TreeNode roomnode = portalsnode.Nodes[j];
+                        if (roomnode.Tag == portal) return roomnode;
+                    }
+                    break;
+                }
+            }
+            return null;
+        }
         public TreeNode FindMloEntityTreeNode(MCEntityDef ent)
         {
             MCMloRoomDef entityroom = ent?.Archetype?.GetEntityRoom(ent);
-            if (entityroom == null) return null;
+            MCMloPortalDef entityportal = entityroom == null ? ent?.Archetype.GetEntityPortal(ent) : null;
+
+            if (entityroom == null && entityportal == null) return null;
 
             TreeNode ytypnode = FindYtypTreeNode(ent.Archetype.Ytyp);
             if (ytypnode == null) return null;
@@ -911,26 +970,51 @@ namespace CodeWalker.Project.Panels
                 TreeNode mloarchetypenode = archetypesnode.Nodes[i];
                 if (mloarchetypenode.Tag == ent.Archetype)
                 {
-                    TreeNode roomsnode = GetChildTreeNode(mloarchetypenode, "Rooms");
-                    if (roomsnode == null) return null;
-
-                    for (int j = 0; j < roomsnode.Nodes.Count; j++)
+                    if (entityroom != null)
                     {
-                        TreeNode roomnode = roomsnode.Nodes[j];
-                        if (roomnode.Tag == entityroom)
-                        {
-                            TreeNode entitiesnode = GetChildTreeNode(roomnode, "Attached Objects");
-                            if (entitiesnode == null) return null;
+                        TreeNode roomsnode = GetChildTreeNode(mloarchetypenode, "Rooms");
+                        if (roomsnode == null) return null;
 
-                            for (var k = 0; k < entitiesnode.Nodes.Count; k++)
+                        for (int j = 0; j < roomsnode.Nodes.Count; j++)
+                        {
+                            TreeNode roomnode = roomsnode.Nodes[j];
+                            if (roomnode.Tag == entityroom)
                             {
-                                TreeNode entitynode = entitiesnode.Nodes[k];
-                                if (entitynode.Tag == ent) return entitynode;
+                                TreeNode entitiesnode = GetChildTreeNode(roomnode, "Attached Objects");
+                                if (entitiesnode == null) return null;
+
+                                for (var k = 0; k < entitiesnode.Nodes.Count; k++)
+                                {
+                                    TreeNode entitynode = entitiesnode.Nodes[k];
+                                    if (entitynode.Tag == ent) return entitynode;
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
-                    break;
+                    else
+                    {
+                        TreeNode portalsnode = GetChildTreeNode(mloarchetypenode, "Portals");
+                        if (portalsnode == null) return null;
+
+                        for (int j = 0; j < portalsnode.Nodes.Count; j++)
+                        {
+                            TreeNode portalnode = portalsnode.Nodes[j];
+                            if (portalnode.Tag == entityportal)
+                            {
+                                TreeNode entitiesnode = GetChildTreeNode(portalnode, "Attached Objects");
+                                if (entitiesnode == null) return null;
+
+                                for (var k = 0; k < entitiesnode.Nodes.Count; k++)
+                                {
+                                    TreeNode entitynode = entitiesnode.Nodes[k];
+                                    if (entitynode.Tag == ent) return entitynode;
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
                 }
             }
             return null;
@@ -1245,6 +1329,22 @@ namespace CodeWalker.Project.Panels
                 else
                 {
                     ProjectTreeView.SelectedNode = roomnode;
+                }
+            }
+        }
+
+        public void TrySelectMloPortalTreeNode(MCMloPortalDef portal)
+        {
+            TreeNode portalnode = FindMloPortalTreeNode(portal);
+            if (portalnode != null)
+            {
+                if (ProjectTreeView.SelectedNode == portalnode)
+                {
+                    OnItemSelected?.Invoke(portal);
+                }
+                else
+                {
+                    ProjectTreeView.SelectedNode = portalnode;
                 }
             }
         }
@@ -1667,10 +1767,10 @@ namespace CodeWalker.Project.Panels
             if ((tn != null) && (tn.Parent != null))
             {
                 var tnp = tn.Parent.Parent;
-                MCMloRoomDef room = null;
-                if (tnp != null) room = tnp.Tag as MCMloRoomDef;
+                MCMloRoomDef room = ent.Archetype.GetEntityRoom(ent);
+                MCMloPortalDef portal = room == null ? ent.Archetype.GetEntityPortal(ent) : null;
 
-                tn.Parent.Text = "Attached Objects (" + (room?.AttachedObjects.Length - 1 ?? 0) + ")";
+                tn.Parent.Text = "Attached Objects (" + (room != null ? (room?.AttachedObjects.Length - 1 ?? 0) : portal?.AttachedObjects.Length - 1 ?? 0) + ")";
                 tn.Parent.Nodes.Remove(tn);
             }
         }

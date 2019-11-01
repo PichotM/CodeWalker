@@ -95,9 +95,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>CodeWalker.Core\bin\Debug\CodeWalker.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DiscordRPC">
-      <HintPath>..\..\Projets\DiscordRPC.dll</HintPath>
-    </Reference>
     <Reference Include="FastColoredTextBox, Version=2.16.24.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
       <HintPath>packages\FCTB.2.16.24\lib\FastColoredTextBox.dll</HintPath>
     </Reference>

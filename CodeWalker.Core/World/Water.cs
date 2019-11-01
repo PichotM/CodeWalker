@@ -24,7 +24,7 @@ namespace CodeWalker.World
             var rpfman = gameFileCache.RpfMan;
                    
             XmlDocument doc = new XmlDocument();
-            doc.Load("F://Program Files//Rockstar Games//Grand Theft Auto V//mods//water.xml");
+            doc.Load("E://Program Files//Rockstar Games//Grand Theft Auto V//mods//water.xml");
 
             XmlElement waterdata = doc.DocumentElement;
             if (waterdata == null)

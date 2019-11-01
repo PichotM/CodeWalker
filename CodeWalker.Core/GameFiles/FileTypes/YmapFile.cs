@@ -1229,12 +1229,18 @@ namespace CodeWalker.GameFiles
 
         public void InitYmapEntityArchetypes(GameFileCache gfc)
         {
+            uint hash = JenkHash.GenHash("prop_vend_fridge01");
             if (AllEntities != null)
             {
                 for (int i = 0; i < AllEntities.Length; i++)
                 {
                     var ent = AllEntities[i];
                     var arch = gfc.GetArchetype(ent._CEntityDef.archetypeName);
+                    if (arch == null)
+                    {
+                        arch = gfc.GetArchetype(hash);
+                    }
+
                     ent.SetArchetype(arch);
                     if (ent.IsMlo) ent.MloInstance.InitYmapEntityArchetypes(gfc);
                 }

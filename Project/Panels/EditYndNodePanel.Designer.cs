@@ -33,6 +33,8 @@ namespace CodeWalker.Project.Panels
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditYndNodePanel));
             this.PathNodeTabControl = new System.Windows.Forms.TabControl();
             this.PathNodePropertiesTabPage = new System.Windows.Forms.TabPage();
+            this.outerButton = new System.Windows.Forms.Button();
+            this.junctionButton = new System.Windows.Forms.Button();
             this.templateButton = new System.Windows.Forms.Button();
             this.PathNodeFlags5GroupBox = new System.Windows.Forms.GroupBox();
             this.PathNodeFlags52CheckBox = new System.Windows.Forms.CheckBox();
@@ -160,8 +162,9 @@ namespace CodeWalker.Project.Panels
             this.PathNodeJunctionMaxZUpDown = new System.Windows.Forms.NumericUpDown();
             this.label65 = new System.Windows.Forms.Label();
             this.PathNodeJunctionEnableCheckBox = new System.Windows.Forms.CheckBox();
-            this.junctionButton = new System.Windows.Forms.Button();
-            this.outerButton = new System.Windows.Forms.Button();
+            this.buttonFrom = new System.Windows.Forms.Button();
+            this.buttonTo = new System.Windows.Forms.Button();
+            this.buttonFrom2 = new System.Windows.Forms.Button();
             this.PathNodeTabControl.SuspendLayout();
             this.PathNodePropertiesTabPage.SuspendLayout();
             this.PathNodeFlags5GroupBox.SuspendLayout();
@@ -226,6 +229,9 @@ namespace CodeWalker.Project.Panels
             // 
             // PathNodePropertiesTabPage
             // 
+            this.PathNodePropertiesTabPage.Controls.Add(this.buttonFrom2);
+            this.PathNodePropertiesTabPage.Controls.Add(this.buttonTo);
+            this.PathNodePropertiesTabPage.Controls.Add(this.buttonFrom);
             this.PathNodePropertiesTabPage.Controls.Add(this.outerButton);
             this.PathNodePropertiesTabPage.Controls.Add(this.junctionButton);
             this.PathNodePropertiesTabPage.Controls.Add(this.templateButton);
@@ -254,6 +260,28 @@ namespace CodeWalker.Project.Panels
             this.PathNodePropertiesTabPage.TabIndex = 2;
             this.PathNodePropertiesTabPage.Text = "Node Properties";
             this.PathNodePropertiesTabPage.UseVisualStyleBackColor = true;
+            // 
+            // outerButton
+            // 
+            this.outerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.outerButton.Location = new System.Drawing.Point(370, 301);
+            this.outerButton.Name = "outerButton";
+            this.outerButton.Size = new System.Drawing.Size(115, 23);
+            this.outerButton.TabIndex = 51;
+            this.outerButton.Text = "Outer node";
+            this.outerButton.UseVisualStyleBackColor = true;
+            this.outerButton.Click += new System.EventHandler(this.outerButton_Click);
+            // 
+            // junctionButton
+            // 
+            this.junctionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.junctionButton.Location = new System.Drawing.Point(370, 272);
+            this.junctionButton.Name = "junctionButton";
+            this.junctionButton.Size = new System.Drawing.Size(115, 23);
+            this.junctionButton.TabIndex = 50;
+            this.junctionButton.Text = "Junction";
+            this.junctionButton.UseVisualStyleBackColor = true;
+            this.junctionButton.Click += new System.EventHandler(this.junctionButton_Click);
             // 
             // templateButton
             // 
@@ -1033,7 +1061,7 @@ namespace CodeWalker.Project.Panels
             this.PathNodeLinksTabPage.Controls.Add(this.splitContainer2);
             this.PathNodeLinksTabPage.Location = new System.Drawing.Point(4, 22);
             this.PathNodeLinksTabPage.Name = "PathNodeLinksTabPage";
-            this.PathNodeLinksTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.PathNodeLinksTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.PathNodeLinksTabPage.Size = new System.Drawing.Size(511, 421);
             this.PathNodeLinksTabPage.TabIndex = 0;
             this.PathNodeLinksTabPage.Text = "Path Links";
@@ -1090,7 +1118,7 @@ namespace CodeWalker.Project.Panels
             this.PathNodeLinksListBox.FormattingEnabled = true;
             this.PathNodeLinksListBox.Location = new System.Drawing.Point(0, 0);
             this.PathNodeLinksListBox.Name = "PathNodeLinksListBox";
-            this.PathNodeLinksListBox.Size = new System.Drawing.Size(165, 329);
+            this.PathNodeLinksListBox.Size = new System.Drawing.Size(165, 316);
             this.PathNodeLinksListBox.TabIndex = 0;
             this.PathNodeLinksListBox.SelectedIndexChanged += new System.EventHandler(this.PathNodeLinksListBox_SelectedIndexChanged);
             // 
@@ -1531,7 +1559,7 @@ namespace CodeWalker.Project.Panels
             this.PathNodeJunctionTabPage.Controls.Add(this.PathNodeJunctionEnableCheckBox);
             this.PathNodeJunctionTabPage.Location = new System.Drawing.Point(4, 22);
             this.PathNodeJunctionTabPage.Name = "PathNodeJunctionTabPage";
-            this.PathNodeJunctionTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.PathNodeJunctionTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.PathNodeJunctionTabPage.Size = new System.Drawing.Size(511, 421);
             this.PathNodeJunctionTabPage.TabIndex = 1;
             this.PathNodeJunctionTabPage.Text = "Junction";
@@ -1767,27 +1795,38 @@ namespace CodeWalker.Project.Panels
             this.PathNodeJunctionEnableCheckBox.UseVisualStyleBackColor = true;
             this.PathNodeJunctionEnableCheckBox.CheckedChanged += new System.EventHandler(this.PathNodeJunctionEnableCheckBox_CheckedChanged);
             // 
-            // junctionButton
+            // buttonFrom
             // 
-            this.junctionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.junctionButton.Location = new System.Drawing.Point(370, 272);
-            this.junctionButton.Name = "junctionButton";
-            this.junctionButton.Size = new System.Drawing.Size(115, 23);
-            this.junctionButton.TabIndex = 50;
-            this.junctionButton.Text = "Junction";
-            this.junctionButton.UseVisualStyleBackColor = true;
-            this.junctionButton.Click += new System.EventHandler(this.junctionButton_Click);
+            this.buttonFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFrom.Location = new System.Drawing.Point(418, 67);
+            this.buttonFrom.Name = "buttonFrom";
+            this.buttonFrom.Size = new System.Drawing.Size(28, 23);
+            this.buttonFrom.TabIndex = 52;
+            this.buttonFrom.Text = "F";
+            this.buttonFrom.UseVisualStyleBackColor = true;
+            this.buttonFrom.Click += new System.EventHandler(this.buttonFrom_Click);
             // 
-            // outerButton
+            // buttonTo
             // 
-            this.outerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.outerButton.Location = new System.Drawing.Point(370, 301);
-            this.outerButton.Name = "outerButton";
-            this.outerButton.Size = new System.Drawing.Size(115, 23);
-            this.outerButton.TabIndex = 51;
-            this.outerButton.Text = "Outer node";
-            this.outerButton.UseVisualStyleBackColor = true;
-            this.outerButton.Click += new System.EventHandler(this.outerButton_Click);
+            this.buttonTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTo.Location = new System.Drawing.Point(476, 67);
+            this.buttonTo.Name = "buttonTo";
+            this.buttonTo.Size = new System.Drawing.Size(28, 23);
+            this.buttonTo.TabIndex = 53;
+            this.buttonTo.Text = "T";
+            this.buttonTo.UseVisualStyleBackColor = true;
+            this.buttonTo.Click += new System.EventHandler(this.buttonTo_Click);
+            // 
+            // buttonFrom2
+            // 
+            this.buttonFrom2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFrom2.Location = new System.Drawing.Point(447, 67);
+            this.buttonFrom2.Name = "buttonFrom2";
+            this.buttonFrom2.Size = new System.Drawing.Size(28, 23);
+            this.buttonFrom2.TabIndex = 54;
+            this.buttonFrom2.Text = "F2";
+            this.buttonFrom2.UseVisualStyleBackColor = true;
+            this.buttonFrom2.Click += new System.EventHandler(this.buttonFrom2_Click);
             // 
             // EditYndNodePanel
             // 
@@ -1889,7 +1928,6 @@ namespace CodeWalker.Project.Panels
         private System.Windows.Forms.Label PathNodeFlags3Label;
         private System.Windows.Forms.GroupBox PathNodeFlags2GroupBox;
         private System.Windows.Forms.CheckBox PathNodeFlags21CheckBox;
-        private System.Windows.Forms.CheckBox PathNodeFlags28CheckBox;
         private System.Windows.Forms.CheckBox PathNodeFlags22CheckBox;
         private System.Windows.Forms.CheckBox PathNodeFlags27CheckBox;
         private System.Windows.Forms.CheckBox PathNodeFlags23CheckBox;
@@ -1995,5 +2033,9 @@ namespace CodeWalker.Project.Panels
         private System.Windows.Forms.Button templateButton;
         private Button outerButton;
         private Button junctionButton;
+        private CheckBox PathNodeFlags28CheckBox;
+        private Button buttonFrom;
+        private Button buttonTo;
+        private Button buttonFrom2;
     }
 }

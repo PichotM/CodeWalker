@@ -47,10 +47,19 @@
             this.label33 = new System.Windows.Forms.Label();
             this.YndRpfPathTextBox = new System.Windows.Forms.TextBox();
             this.yndMove = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericUpDownFrom = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownTo = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxBackRoad = new System.Windows.Forms.CheckBox();
+            this.buttonGo = new System.Windows.Forms.Button();
+            this.numericUpDownFromTwo = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.YndAreaIDYUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YndAreaIDXUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YndPedNodesUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YndVehicleNodesUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFrom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFromTwo)).BeginInit();
             this.SuspendLayout();
             // 
             // label88
@@ -98,7 +107,7 @@
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(23, 216);
+            this.label48.Location = new System.Drawing.Point(23, 421);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(68, 13);
             this.label48.TabIndex = 32;
@@ -108,7 +117,7 @@
             // 
             this.YndProjectPathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.YndProjectPathTextBox.Location = new System.Drawing.Point(97, 213);
+            this.YndProjectPathTextBox.Location = new System.Drawing.Point(97, 418);
             this.YndProjectPathTextBox.Name = "YndProjectPathTextBox";
             this.YndProjectPathTextBox.ReadOnly = true;
             this.YndProjectPathTextBox.Size = new System.Drawing.Size(450, 20);
@@ -117,7 +126,7 @@
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(23, 190);
+            this.label46.Location = new System.Drawing.Point(23, 395);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(51, 13);
             this.label46.TabIndex = 30;
@@ -127,7 +136,7 @@
             // 
             this.YndFilePathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.YndFilePathTextBox.Location = new System.Drawing.Point(97, 187);
+            this.YndFilePathTextBox.Location = new System.Drawing.Point(97, 392);
             this.YndFilePathTextBox.Name = "YndFilePathTextBox";
             this.YndFilePathTextBox.ReadOnly = true;
             this.YndFilePathTextBox.Size = new System.Drawing.Size(450, 20);
@@ -136,7 +145,7 @@
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(23, 164);
+            this.label47.Location = new System.Drawing.Point(23, 369);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(52, 13);
             this.label47.TabIndex = 28;
@@ -217,7 +226,7 @@
             // 
             this.YndRpfPathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.YndRpfPathTextBox.Location = new System.Drawing.Point(97, 161);
+            this.YndRpfPathTextBox.Location = new System.Drawing.Point(97, 366);
             this.YndRpfPathTextBox.Name = "YndRpfPathTextBox";
             this.YndRpfPathTextBox.ReadOnly = true;
             this.YndRpfPathTextBox.Size = new System.Drawing.Size(450, 20);
@@ -233,11 +242,87 @@
             this.yndMove.UseVisualStyleBackColor = true;
             this.yndMove.Click += new System.EventHandler(this.yndMove_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 110);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(96, 13);
+            this.label1.TabIndex = 38;
+            this.label1.Text = "Fast flag applicator";
+            // 
+            // numericUpDownFrom
+            // 
+            this.numericUpDownFrom.Location = new System.Drawing.Point(23, 139);
+            this.numericUpDownFrom.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericUpDownFrom.Name = "numericUpDownFrom";
+            this.numericUpDownFrom.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDownFrom.TabIndex = 39;
+            this.numericUpDownFrom.ValueChanged += new System.EventHandler(this.numericUpDownFrom_ValueChanged);
+            // 
+            // numericUpDownTo
+            // 
+            this.numericUpDownTo.Location = new System.Drawing.Point(185, 139);
+            this.numericUpDownTo.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericUpDownTo.Name = "numericUpDownTo";
+            this.numericUpDownTo.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDownTo.TabIndex = 40;
+            this.numericUpDownTo.ValueChanged += new System.EventHandler(this.numericUpDownTo_ValueChanged);
+            // 
+            // checkBoxBackRoad
+            // 
+            this.checkBoxBackRoad.AutoSize = true;
+            this.checkBoxBackRoad.Location = new System.Drawing.Point(23, 171);
+            this.checkBoxBackRoad.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxBackRoad.Name = "checkBoxBackRoad";
+            this.checkBoxBackRoad.Size = new System.Drawing.Size(75, 17);
+            this.checkBoxBackRoad.TabIndex = 41;
+            this.checkBoxBackRoad.Text = "Back road";
+            this.checkBoxBackRoad.UseVisualStyleBackColor = true;
+            // 
+            // buttonGo
+            // 
+            this.buttonGo.Location = new System.Drawing.Point(23, 194);
+            this.buttonGo.Name = "buttonGo";
+            this.buttonGo.Size = new System.Drawing.Size(108, 21);
+            this.buttonGo.TabIndex = 42;
+            this.buttonGo.Text = "Appliquer";
+            this.buttonGo.UseVisualStyleBackColor = true;
+            this.buttonGo.Click += new System.EventHandler(this.buttonGo_Click);
+            // 
+            // numericUpDownFromTwo
+            // 
+            this.numericUpDownFromTwo.Location = new System.Drawing.Point(104, 139);
+            this.numericUpDownFromTwo.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericUpDownFromTwo.Name = "numericUpDownFromTwo";
+            this.numericUpDownFromTwo.Size = new System.Drawing.Size(74, 20);
+            this.numericUpDownFromTwo.TabIndex = 43;
+            this.numericUpDownFromTwo.ValueChanged += new System.EventHandler(this.numericUpDownFromTwo_ValueChanged);
+            // 
             // EditYndPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(574, 499);
+            this.Controls.Add(this.numericUpDownFromTwo);
+            this.Controls.Add(this.buttonGo);
+            this.Controls.Add(this.checkBoxBackRoad);
+            this.Controls.Add(this.numericUpDownTo);
+            this.Controls.Add(this.numericUpDownFrom);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.yndMove);
             this.Controls.Add(this.label88);
             this.Controls.Add(this.YndAreaIDYUpDown);
@@ -263,6 +348,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.YndAreaIDXUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YndPedNodesUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.YndVehicleNodesUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFrom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFromTwo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -288,5 +376,11 @@
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.TextBox YndRpfPathTextBox;
         private System.Windows.Forms.Button yndMove;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericUpDownFrom;
+        private System.Windows.Forms.NumericUpDown numericUpDownTo;
+        private System.Windows.Forms.CheckBox checkBoxBackRoad;
+        private System.Windows.Forms.Button buttonGo;
+        private System.Windows.Forms.NumericUpDown numericUpDownFromTwo;
     }
 }

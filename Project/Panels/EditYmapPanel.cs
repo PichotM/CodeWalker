@@ -568,5 +568,72 @@ namespace CodeWalker.Project.Panels
         {
             SetYmapPhysicsDictionariesFromTextbox();
         }
+
+        private void buttonShiftPos_Click(object sender, EventArgs e)
+        {
+            foreach(YmapEntityDef entity in Ymap.AllEntities)
+            {
+                entity.SetPosition(new Vector3(entity.Position.X + (float)numericPosX.Value, entity.Position.Y + (float)numericPosY.Value, entity.Position.Z + (float)numericPosZ.Value));
+            }
+        }
+
+        private double degToRad = Math.PI / 180.0;
+
+        public Quaternion AngleToQuaternion(double x, double y, double z)
+        {
+            x = (x * degToRad) / 2;
+            y = (y * degToRad) / 2;
+            z = (z * degToRad) / 2;
+
+            var c1 = Math.Cos(y);
+            var s1 = Math.Sin(y);
+            var c2 = Math.Cos(x);
+            var s2 = Math.Sin(x);
+            var c3 = Math.Cos(z);
+            var s3 = Math.Sin(z);
+
+            return new Quaternion(
+                (float)(s1 * c2 * s3 + c1 * s2 * c3),
+                (float)(s1 * c2 * c3 - c1 * s2 * s3),
+                (float)(c1 * c2 * s3 - s1 * s2 * c3),
+                (float)(c1 * c2 * c3 + s1 * s2 * s3));
+        }
+        public static Vector3 Multiply(Quaternion rotation, Vector3 point)
+        {
+            float q0 = rotation.W;
+            float q0Square = rotation.W * rotation.W;
+            Vector3 q = new Vector3(rotation.X, rotation.Y, rotation.Z);
+            return ((q0Square - q.LengthSquared()) * point) + (2 * Vector3.Dot(q, point) * q) + (2 * q0 * Vector3.Cross(q, point));
+        }
+        public static Vector3 RotateTransform(Quaternion rotation, Vector3 point, Vector3 center)
+        {
+            Vector3 PointNewCenter = Vector3.Subtract(point, center);
+            Vector3 TransformedPoint = Multiply(rotation, PointNewCenter);
+            return Vector3.Add(TransformedPoint, center);
+        }
+        public static void Mlo2World(YmapEntityDef entity, Vector3 pos, Quaternion mloWorldRotation)
+        {
+            var entityRotation = new Quaternion(entity._CEntityDef.rotation.X, entity._CEntityDef.rotation.Y, entity._CEntityDef.rotation.Z, entity._CEntityDef.rotation.W);
+
+            entity.Position = RotateTransform(mloWorldRotation, entity.Position, Vector3.Zero);
+            entity.Position += pos;
+
+            var rotationDiff = entityRotation * Quaternion.Invert(mloWorldRotation);
+
+            rotationDiff.Normalize();
+
+            entity._CEntityDef.rotation = new Vector4(rotationDiff.X, rotationDiff.Y, rotationDiff.Z, rotationDiff.W);
+            entity.SetOrientation(new Quaternion(entity._CEntityDef.rotation), true);
+        }
+
+        private void buttonShiftRot_Click(object sender, EventArgs e)
+        {
+            Quaternion rot = AngleToQuaternion((double)numericRotX.Value, (double)numericRotY.Value, (double)numericRotZ.Value);
+
+            foreach (YmapEntityDef entity in Ymap.AllEntities)
+            {
+                Mlo2World(entity, Vector3.Zero, rot);
+            }
+        }
     }
 }

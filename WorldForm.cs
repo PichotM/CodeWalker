@@ -211,6 +211,9 @@ namespace CodeWalker
 
         bool initedOk = false;
 
+        List<Vector3> list = new List<Vector3>();
+        int listIndex = 0;
+
 
         public WorldForm()
         {
@@ -3500,6 +3503,23 @@ namespace CodeWalker
                 SelectItem(ms);
             }
         }
+
+        public void SelectMloPortal(MCMloPortalDef portal, MloInstanceData instance)
+        {
+            if (portal == null)
+            {
+                SelectItem(null);
+            }
+            else if (instance != null)
+            {
+                MapSelection ms = new MapSelection();
+                ms.MloPortalDef = portal;
+                /*Vector3 min = instance.Owner.Position + instance.Owner.Orientation.Multiply(portal.Corners.);
+                Vector3 max = instance.Owner.Position + instance.Owner.Orientation.Multiply(portal.BBMax_CW);
+                ms.AABB = new BoundingBox(min, max);*/
+                SelectItem(ms);
+            }
+        }
         public void SelectNavPoly(YnvPoly poly)
         {
             if (poly == null)
@@ -6472,6 +6492,11 @@ namespace CodeWalker
                     if (k == Keys.Delete)
                     {
                         DeleteItem();
+                    }
+                    if (k == Keys.J && listIndex < list.Count && list[listIndex] != null)
+                    {
+                        camera.FollowEntity.Position = list[listIndex];
+                        listIndex++;
                     }
                 }
                 else

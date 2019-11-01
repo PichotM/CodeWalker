@@ -1275,14 +1275,12 @@ namespace CodeWalker.Project.Panels
 
         private void applyTemplate()
         {
-            PathNodeFlags0UpDown.Value = 2;
-            PathNodeFlags1UpDown.Value = 0;
-            PathNodeFlags2UpDown.Value = 144;
-            PathNodeFlags4UpDown.Value = 113;
+            PathNodeFlags14CheckBox.Checked = true;
+            PathNodeFlags15CheckBox.Checked = true;
+            PathNodeFlags16CheckBox.Checked = true;
+            PathNodeFlags17CheckBox.Checked = true;
 
-            PathNodeFlags3UpDown.Value = 74;
-            PathNodeFlags5UpDown.Value = 2;
-
+            SetPathNodeFlagsFromCheckBoxes();
             SetPathNodeFlagsFromUpDowns();
         }
 
@@ -1296,6 +1294,21 @@ namespace CodeWalker.Project.Panels
         {
             PathNodeFlags1UpDown.Value = 120;
             SetPathNodeFlagsFromUpDowns();
+        }
+
+        private void buttonFrom2_Click(object sender, EventArgs e)
+        {
+            ProjectForm.NodeFrom2 = CurrentPathNode.NodeID;
+        }
+
+        private void buttonTo_Click(object sender, EventArgs e)
+        {
+            ProjectForm.NodeTo = CurrentPathNode.NodeID;
+        }
+
+        private void buttonFrom_Click(object sender, EventArgs e)
+        {
+            ProjectForm.NodeFrom = CurrentPathNode.NodeID;
         }
     }
 }

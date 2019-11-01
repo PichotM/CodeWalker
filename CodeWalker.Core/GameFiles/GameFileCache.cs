@@ -95,8 +95,6 @@ namespace CodeWalker.GameFiles
         private string ExcludeFolders;
         private bool OnlyMods = false;
 
-
-
         public int QueueLength
         {
             get
@@ -943,8 +941,6 @@ namespace CodeWalker.GameFiles
             YmapDict = new Dictionary<uint, RpfFileEntry>();
             YbnDict = new Dictionary<uint, RpfFileEntry>();
             YnvDict = new Dictionary<uint, RpfFileEntry>();
-
-            Console.WriteLine("CALLED HERE");
             
             foreach (var rpffile in ActiveMapRpfFiles.Values) //RpfMan.BaseRpfs)
             {
@@ -962,17 +958,19 @@ namespace CodeWalker.GameFiles
                         }
                         else if (entry.NameLower.EndsWith(".ybn"))
                         {
+                            if (OnlyMods && !entry.Path.Contains("mods")) { continue; }
                             //YbnDict[entry.NameHash] = fentry;
                             YbnDict[entry.ShortNameHash] = fentry;
                         }
                         else if (entry.NameLower.EndsWith(".ynv"))
                         {
+                            if (OnlyMods && !entry.Path.Contains("mods")) { continue; }
                             YnvDict[entry.ShortNameHash] = fentry;
                         }
                     }
                 }
             }
-
+            
             AllYmapsDict = new Dictionary<uint, RpfFileEntry>();
             foreach (var rpffile in AllRpfs)
             {
@@ -984,13 +982,11 @@ namespace CodeWalker.GameFiles
                         RpfFileEntry fentry = entry as RpfFileEntry;
                         if (entry.NameLower.EndsWith(".ymap"))
                         {
-                            if (OnlyMods && !entry.Path.Contains("mods")) { continue; }
                             AllYmapsDict[entry.ShortNameHash] = fentry;
                         }
                     }
                 }
             }
-
         }
 
         private void InitManifestDicts()
@@ -1145,13 +1141,14 @@ namespace CodeWalker.GameFiles
         {
             AllCacheFiles = new List<CacheDatFile>();
             YmapHierarchyDict = new Dictionary<uint, MapDataStoreNode>();
+            
 
             string cachefilepath = "common.rpf\\data\\gta5_cache_y.dat";
             if (EnableDlc)
             {
                 cachefilepath = "update\\update.rpf\\common\\data\\gta5_cache_y.dat";
             }
-
+            
             try
             {
                 var maincache = RpfMan.GetFile<CacheDatFile>(cachefilepath);
@@ -1177,7 +1174,6 @@ namespace CodeWalker.GameFiles
             {
                 ErrorLog(cachefilepath + ": " + ex.ToString());
             }
-
 
             if (EnableDlc)
             {
@@ -1206,6 +1202,7 @@ namespace CodeWalker.GameFiles
                     }
 
                 }
+                Console.WriteLine("5");
 
                 //foreach (var dlcfile in DlcActiveRpfs)
                 //{

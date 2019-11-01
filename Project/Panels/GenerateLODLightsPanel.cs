@@ -106,6 +106,13 @@ namespace CodeWalker.Project.Panels
                     foreach (var ent in ymap.AllEntities)
                     {
                         if (ent.Archetype == null) continue;
+                        var name = ent.Archetype.Name;
+
+                        if (name.Contains("wall_light") || name.Contains("ind_light") || name.Contains("streetlight_11"))
+                        {
+                            Console.WriteLine("Abort for " + name);
+                            continue;
+                        }
 
                         bool waiting = false;
                         var dwbl = gameFileCache.TryGetDrawable(ent.Archetype, out waiting);
@@ -129,6 +136,7 @@ namespace CodeWalker.Project.Panels
                             {
                                 lightAttrs = fdwbl.OwnerFragment?.LightAttributes?.data_items;
                             }
+
                             if (lightAttrs != null)
                             {
                                 eemin = Vector3.Min(eemin, ent.BBMin);
@@ -192,14 +200,24 @@ namespace CodeWalker.Project.Panels
                                             }
                                         }
                                     }
-
-
+                                   
 
                                     Vector3 lpos = new Vector3(la.PositionX, la.PositionY, la.PositionZ);
                                     Vector3 ldir = new Vector3(la.DirectionX, la.DirectionY, la.DirectionZ);
                                     Vector3 bpos = xform.Multiply(lpos);
                                     Vector3 bdir = xform.MultiplyRot(ldir);
-                                    Vector3 epos = ent.Orientation.Multiply(bpos) + ent.Position;
+                                    Vector3 aa = ent.Orientation.Multiply(bpos);
+                                    Vector3 epos = aa + ent.Position;
+
+                                    Vector3 abmin = ent.Archetype.BBMin * ent.Scale; //entity box
+                                    Vector3 abmax = ent.Archetype.BBMax * ent.Scale;
+                                    
+                                    //    Console.WriteLine(abmax.Z + " - " + abmin.Z + " - " + epos.Z + " - " + ent.Position);
+                                    if (epos.Z > (ent.Position.Z + abmax.Z))
+                                    {
+                                        epos.Z = ent.Position.Z + abmax.Z;
+                                    }
+                                    
                                     Vector3 edir = ent.Orientation.Multiply(bdir);
 
                                     uint r = la.ColorR;
@@ -219,10 +237,9 @@ namespace CodeWalker.Project.Panels
 
 
                                     //any other way to know if it's a streetlight?
-                                    //var name = ent.Archetype.Name;
                                     var flags = la.Flags;
-                                    bool isStreetLight = (((flags >> 10) & 1u) == 1);// (name != null) && (name.Contains("street") || name.Contains("traffic"));
-                                    isStreetLight = false; //TODO: fix this!
+                                    bool isStreetLight = (((flags >> 10) & 1u) == 1) || ((name != null) && (name.Contains("street") || name.Contains("traffic")));
+                                    //isStreetLight = false; //TODO: fix this!
 
 
                                     //@Calcium:
@@ -233,9 +250,7 @@ namespace CodeWalker.Project.Panels
                                     uint unk = isStreetLight ? 1u : 0;//2 bits - isStreetLight low bit, unk high bit
                                     uint t = la.TimeFlags | (type << 26) | (unk << 24);
 
-                                    var maxext = (byte)Math.Max(Math.Max(la.ExtentX, la.ExtentY), la.ExtentZ);
-
-
+                                    var maxext = (byte)Math.Max(Math.Max(la.ExtentX, la.ExtentY), la.ExtentZ);                                    
 
                                     var light = new Light();
                                     light.position = new MetaVECTOR3(epos);

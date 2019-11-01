@@ -45,6 +45,7 @@ namespace CodeWalker.Project
         private Archetype CurrentArchetype;
         private MCEntityDef CurrentMloEntity;
         private MCMloRoomDef CurrentMloRoom;
+        private MCMloPortalDef CurrentMloPortal;
 
         private YndFile CurrentYndFile;
         private YndNode CurrentPathNode;
@@ -84,6 +85,10 @@ namespace CodeWalker.Project
         private Dictionary<uint, RelFile> visibleaudiofiles = new Dictionary<uint, RelFile>();
 
         private bool ShowProjectItemInProcess = false;
+
+        public int NodeFrom = 0;
+        public int NodeFrom2 = 0;
+        public int NodeTo = 0;
 
 
         public ProjectForm(WorldForm worldForm = null)
@@ -460,6 +465,14 @@ namespace CodeWalker.Project
                 (panel) => { panel.SetRoom(CurrentMloRoom); }, //updateFunc
                 (panel) => { return panel.CurrentRoom == CurrentMloRoom; }); //findFunc
         }
+
+        public void ShowEditYtypArchetypeMloPortalPanel(bool promote)
+        {
+            /*ShowPanel(promote,
+                  () => { return new EditYtypArchetypeMloPortalPanel(this); }, //createFunc
+                  (panel) => { panel.SetPortal(CurrentMloPortal); }, //updateFunc
+                  (panel) => { return panel.CurrentPortal == CurrentMloPortal; }); //findFunc*/
+        }
         public void ShowEditAudioFilePanel(bool promote)
         {
             ShowPanel(promote,
@@ -519,6 +532,10 @@ namespace CodeWalker.Project
             else if (CurrentMloRoom != null)
             {
                 ShowEditYtypArchetypeMloRoomPanel(promote);
+            }
+            else if (CurrentMloPortal != null)
+            {
+                ShowEditYtypArchetypeMloPortalPanel(promote);
             }
             else if (CurrentEntity != null)
             {
@@ -659,6 +676,7 @@ namespace CodeWalker.Project
             CurrentAudioInterior = item as Dat151Interior;
             CurrentAudioInteriorRoom = item as Dat151InteriorRoom;
             CurrentMloRoom = item as MCMloRoomDef;
+            CurrentMloPortal = item as MCMloPortalDef;
 
             if (CurrentAudioZone?.AudioZone == null) CurrentAudioZone = null;
             if (CurrentAudioEmitter?.AudioEmitter == null) CurrentAudioEmitter = null;
@@ -2294,8 +2312,25 @@ namespace CodeWalker.Project
                 CurrentArchetype = mloArch;
             }
 
-            if (CurrentMloRoom == null) CurrentMloRoom = mloArch?.GetEntityRoom(CurrentMloEntity);
-            if (CurrentMloRoom == null)
+            if (CurrentMloRoom == null && CurrentMloPortal == null)
+            {
+                MCMloRoomDef entityRoom = mloArch?.GetEntityRoom(CurrentMloEntity);
+                if (entityRoom == null)
+                {
+                    MCMloPortalDef entityPortal = mloArch?.GetEntityPortal(CurrentMloEntity);
+                    if (entityPortal != null)
+                    {
+                        CurrentMloPortal = entityPortal;
+                    }
+                }
+                else
+                {
+                    CurrentMloRoom = entityRoom;
+                }
+
+            }
+
+            if (CurrentMloRoom == null && CurrentMloPortal == null)
             {
                 return;
             }
@@ -2303,24 +2338,35 @@ namespace CodeWalker.Project
             MloInstanceData mloInstance = TryGetMloInstance(mloArch);
             if (mloInstance == null) return;
 
-            if (mloArch.rooms.Length <= 0)
+            bool inRoom = CurrentMloRoom != null;
+
+            if (inRoom ? mloArch.rooms.Length <= 0 : mloArch.portals.Length <= 0)
             {
-                MessageBox.Show($@"Mlo {mloArch.Name} has no rooms! Cannot create entity.");
+                MessageBox.Show($@"Mlo {mloArch.Name} has no " + (inRoom ? "room" : "portal") + "! Cannot create entity.");
                 return;
             }
 
-            int roomIndex = CurrentMloRoom.Index;
+            int roomIndex = inRoom ? CurrentMloRoom.Index : CurrentMloPortal.Index;
             if (roomIndex < 0)
             {
-                MessageBox.Show(@"Invalid room index.");
+                MessageBox.Show(@"Invalid " + (inRoom ? "room" : "portal") + " index.");
                 return;
             }
-            if (roomIndex >= mloArch.rooms.Length)
+            if (inRoom && roomIndex >= mloArch.rooms.Length)
             {
                 MessageBox.Show(
                     $@"Room at index {roomIndex} does not exist in {mloArch.Name}! {mloArch.Name} only has {
                             mloArch.rooms.Length
                         } rooms.");
+                return;
+            }
+
+            if (!inRoom && roomIndex >= mloArch.portals.Length)
+            {
+                MessageBox.Show(
+                      $@"Portal at index {roomIndex} does not exist in {mloArch.Name}! {mloArch.Name} only has {
+                              mloArch.portals.Length
+                          } portals.");
                 return;
             }
             
@@ -2372,13 +2418,13 @@ namespace CodeWalker.Project
                     {
                         // Add the entity to the mlo instance and archetype.
                         outEnt = mloInstance.CreateYmapEntity(mloInstance.Owner, ment, createindex);
-                        mloArch.AddEntity(outEnt, roomIndex);
+                        mloArch.AddEntity(outEnt, roomIndex, !inRoom);
                     }
                 }
                 else
                 {
                     outEnt = mloInstance.CreateYmapEntity(mloInstance.Owner, ment, createindex);
-                    mloArch.AddEntity(outEnt, roomIndex);
+                    mloArch.AddEntity(outEnt, roomIndex, !inRoom);
                 }
             }
             catch(Exception e)
@@ -5347,6 +5393,7 @@ namespace CodeWalker.Project
                 {
                     var mlo = sel.MloEntityDef;
                     var room = sel.MloRoomDef;
+                    var portal = sel.MloPortalDef;
                     var ent = sel.EntityDef;
                     var cargen = sel.CarGenerator;
                     var grassbatch = sel.GrassBatch;
@@ -5404,6 +5451,10 @@ namespace CodeWalker.Project
                         {
                             ProjectExplorer?.TrySelectMloRoomTreeNode(room);
                         }
+                        if (portal != CurrentMloPortal)
+                        {
+                            ProjectExplorer?.TrySelectMloPortalTreeNode(portal);
+                        }
                     }
                     else if (YndExistsInProject(ynd))
                     {
@@ -5460,6 +5511,7 @@ namespace CodeWalker.Project
                     }
 
                     CurrentMloRoom = room;
+                    CurrentMloPortal = portal;
                     CurrentYmapFile = ymap;
                     CurrentYtypFile = ytyp;
                     CurrentArchetype = arch;
@@ -6284,7 +6336,7 @@ namespace CodeWalker.Project
         {
             bool enable = (CurrentYtypFile != null);
             bool inproj = YtypExistsInProject(CurrentYtypFile);
-            bool ismlo = ((CurrentEntity != null) && (CurrentEntity.MloParent != null) || (CurrentMloRoom != null)) || (CurrentArchetype is MloArchetype);
+            bool ismlo = ((CurrentEntity != null) && (CurrentEntity.MloParent != null) || (CurrentMloRoom != null) || (CurrentMloPortal != null)) || (CurrentArchetype is MloArchetype);
 
             YtypNewArchetypeMenu.Enabled = enable && inproj;
             YtypMloToolStripMenuItem.Enabled = enable && inproj && ismlo;
@@ -6959,5 +7011,28 @@ namespace CodeWalker.Project
             SaveAll();
         }
 
+        private void calculateExtentsOfAllYmapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var ymap in CurrentProjectFile.YmapFiles)
+            {
+                if (ymap != null)
+                {
+                    ymap.CalcExtents();
+                    ymap.HasChanged = true;
+                }
+            }
+        }
+
+        private void calculateFlagsOfAllYmapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var ymap in CurrentProjectFile.YmapFiles)
+            {
+                if (ymap != null)
+                {
+                    ymap.CalcFlags();
+                    ymap.HasChanged = true;
+                }
+            }
+        }
     }
 }

@@ -185,6 +185,7 @@ namespace CodeWalker
         public YmapOccludeModel OccludeModel { get; set; }
         public YmapEntityDef MloEntityDef { get; set; }
         public MCMloRoomDef MloRoomDef { get; set; }
+        public MCMloPortalDef MloPortalDef { get; set; }
         public WaterQuad WaterQuad { get; set; }
         public Bounds CollisionBounds { get; set; }
         public YnvPoly NavPoly { get; set; }
@@ -233,7 +234,8 @@ namespace CodeWalker
                     (MloEntityDef != null) ||
                     (ScenarioNode != null) ||
                     (Audio != null) ||
-                    (MloRoomDef != null);
+                    (MloRoomDef != null) ||
+                    (MloPortalDef != null);
             }
         }
 
@@ -266,7 +268,8 @@ namespace CodeWalker
                 || (TrainTrackNode != mhit.TrainTrackNode)
                 || (ScenarioNode != mhit.ScenarioNode)
                 || (Audio != mhit.Audio)
-                || (MloRoomDef != mhit.MloRoomDef);
+                || (MloRoomDef != mhit.MloRoomDef)
+                || (MloPortalDef != mhit.MloPortalDef);
         }
         public bool CheckForChanges()
         {
@@ -292,7 +295,8 @@ namespace CodeWalker
                 || (TrainTrackNode != null)
                 || (ScenarioNode != null)
                 || (Audio != null)
-                || (MloRoomDef != null);
+                || (MloRoomDef != null)
+                || (MloPortalDef != null);
         }
 
 
@@ -412,6 +416,10 @@ namespace CodeWalker
             {
                 name = "MloRoomDef " + MloRoomDef.RoomName;
             }
+            if (MloPortalDef != null)
+            {
+                name = "MloPortalDef " + MloPortalDef.Name;
+            }
             return name;
         }
 
@@ -497,6 +505,10 @@ namespace CodeWalker
             if (MloRoomDef != null)
             {
                 name = "MloRoomDef " + MloRoomDef.RoomName;
+            }
+            if (MloPortalDef != null)
+            {
+                name = "MloPortalDef " + MloPortalDef.Name;
             }
             return name;
         }

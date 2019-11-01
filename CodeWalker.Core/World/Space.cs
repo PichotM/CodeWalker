@@ -178,6 +178,8 @@ namespace CodeWalker.World
             Dictionary<MetaHash, CacheFileDate> filedates = new Dictionary<MetaHash, CacheFileDate>();
             Dictionary<uint, CacheFileDate> filedates2 = new Dictionary<uint, CacheFileDate>();
 
+            Console.WriteLine("AA");
+
             foreach (var cache in caches)
             {
                 foreach (var filedate in cache.FileDates)
@@ -214,8 +216,8 @@ namespace CodeWalker.World
                     }
 
                 }
-
-
+                
+                Console.WriteLine("BB");
 
                 foreach (var node in cache.AllMapNodes)
                 {
@@ -234,6 +236,7 @@ namespace CodeWalker.World
                     interiorProxies[key] = intprx;
                 }
 
+                Console.WriteLine("CC");
                 foreach (var item in cache.AllBoundsStoreItems)
                 {
                     if (!GameFileCache.YbnDict.ContainsKey(item.Name))
@@ -258,13 +261,11 @@ namespace CodeWalker.World
                 }
             }
 
-
-
-
             //try and generate the cache data for uncached ymaps... mainly for mod maps!
             var maprpfs = GameFileCache.ActiveMapRpfFiles;
             foreach (var maprpf in maprpfs.Values)
             {
+                if (OnlyMods && !maprpf.FilePath.Contains("mods")) { continue; }
                 foreach (var entry in maprpf.AllEntries)
                 {
                     if (entry.NameLower.EndsWith(".ymap"))
@@ -311,8 +312,6 @@ namespace CodeWalker.World
                     }
                 }
             }
-
-
         }
 
         private void InitMapGrid()
@@ -718,7 +717,6 @@ namespace CodeWalker.World
             BuildYndVerts(ynd, tverts);
 
         }
-
 
         private void InitNavGrid()
         {
@@ -1176,6 +1174,11 @@ namespace CodeWalker.World
 
             ynds.AddRange(AllYnds.Values);
 
+        }
+
+        public Dictionary<uint, YndFile> GetAllYnds()
+        {
+            return AllYnds;
         }
 
 

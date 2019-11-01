@@ -75,11 +75,33 @@
             this.YmapNameTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericPosX = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.numericPosY = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
+            this.numericPosZ = new System.Windows.Forms.NumericUpDown();
+            this.label16 = new System.Windows.Forms.Label();
+            this.numericRotZ = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.numericRotY = new System.Windows.Forms.NumericUpDown();
+            this.label18 = new System.Windows.Forms.Label();
+            this.numericRotX = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
+            this.buttonShiftPos = new System.Windows.Forms.Button();
+            this.buttonShiftRot = new System.Windows.Forms.Button();
             this.YmapTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPosX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPosY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPosZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericRotZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericRotY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericRotX)).BeginInit();
             this.SuspendLayout();
             // 
             // YmapTabControl
@@ -566,11 +588,229 @@
             this.label2.TabIndex = 42;
             this.label2.Text = "Name:";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 446);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(67, 13);
+            this.label1.TabIndex = 64;
+            this.label1.Text = "Shift position";
+            // 
+            // numericPosX
+            // 
+            this.numericPosX.DecimalPlaces = 5;
+            this.numericPosX.Location = new System.Drawing.Point(39, 471);
+            this.numericPosX.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericPosX.Minimum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            -2147483648});
+            this.numericPosX.Name = "numericPosX";
+            this.numericPosX.Size = new System.Drawing.Size(120, 20);
+            this.numericPosX.TabIndex = 65;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(16, 473);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(17, 13);
+            this.label13.TabIndex = 66;
+            this.label13.Text = "X:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(168, 473);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(17, 13);
+            this.label14.TabIndex = 68;
+            this.label14.Text = "Y:";
+            // 
+            // numericPosY
+            // 
+            this.numericPosY.DecimalPlaces = 5;
+            this.numericPosY.Location = new System.Drawing.Point(191, 471);
+            this.numericPosY.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericPosY.Minimum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            -2147483648});
+            this.numericPosY.Name = "numericPosY";
+            this.numericPosY.Size = new System.Drawing.Size(120, 20);
+            this.numericPosY.TabIndex = 67;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(321, 473);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(17, 13);
+            this.label15.TabIndex = 70;
+            this.label15.Text = "Z:";
+            // 
+            // numericPosZ
+            // 
+            this.numericPosZ.DecimalPlaces = 5;
+            this.numericPosZ.Location = new System.Drawing.Point(344, 471);
+            this.numericPosZ.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericPosZ.Minimum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            -2147483648});
+            this.numericPosZ.Name = "numericPosZ";
+            this.numericPosZ.Size = new System.Drawing.Size(120, 20);
+            this.numericPosZ.TabIndex = 69;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(321, 522);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(17, 13);
+            this.label16.TabIndex = 76;
+            this.label16.Text = "Z:";
+            // 
+            // numericRotZ
+            // 
+            this.numericRotZ.DecimalPlaces = 5;
+            this.numericRotZ.Location = new System.Drawing.Point(344, 520);
+            this.numericRotZ.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericRotZ.Minimum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            -2147483648});
+            this.numericRotZ.Name = "numericRotZ";
+            this.numericRotZ.Size = new System.Drawing.Size(120, 20);
+            this.numericRotZ.TabIndex = 75;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(168, 522);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(17, 13);
+            this.label17.TabIndex = 74;
+            this.label17.Text = "Y:";
+            // 
+            // numericRotY
+            // 
+            this.numericRotY.DecimalPlaces = 5;
+            this.numericRotY.Location = new System.Drawing.Point(191, 520);
+            this.numericRotY.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericRotY.Minimum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            -2147483648});
+            this.numericRotY.Name = "numericRotY";
+            this.numericRotY.Size = new System.Drawing.Size(120, 20);
+            this.numericRotY.TabIndex = 73;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(16, 522);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(17, 13);
+            this.label18.TabIndex = 72;
+            this.label18.Text = "X:";
+            // 
+            // numericRotX
+            // 
+            this.numericRotX.DecimalPlaces = 5;
+            this.numericRotX.Location = new System.Drawing.Point(39, 520);
+            this.numericRotX.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numericRotX.Minimum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            -2147483648});
+            this.numericRotX.Name = "numericRotX";
+            this.numericRotX.Size = new System.Drawing.Size(120, 20);
+            this.numericRotX.TabIndex = 71;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 500);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(66, 13);
+            this.label19.TabIndex = 77;
+            this.label19.Text = "Shift rotation";
+            // 
+            // buttonShiftPos
+            // 
+            this.buttonShiftPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonShiftPos.Location = new System.Drawing.Point(470, 468);
+            this.buttonShiftPos.Name = "buttonShiftPos";
+            this.buttonShiftPos.Size = new System.Drawing.Size(37, 23);
+            this.buttonShiftPos.TabIndex = 41;
+            this.buttonShiftPos.Text = "GO";
+            this.buttonShiftPos.UseVisualStyleBackColor = true;
+            this.buttonShiftPos.Click += new System.EventHandler(this.buttonShiftPos_Click);
+            // 
+            // buttonShiftRot
+            // 
+            this.buttonShiftRot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonShiftRot.Location = new System.Drawing.Point(470, 517);
+            this.buttonShiftRot.Name = "buttonShiftRot";
+            this.buttonShiftRot.Size = new System.Drawing.Size(37, 23);
+            this.buttonShiftRot.TabIndex = 78;
+            this.buttonShiftRot.Text = "GO";
+            this.buttonShiftRot.UseVisualStyleBackColor = true;
+            this.buttonShiftRot.Click += new System.EventHandler(this.buttonShiftRot_Click);
+            // 
             // EditYmapPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(510, 443);
+            this.ClientSize = new System.Drawing.Size(510, 561);
+            this.Controls.Add(this.buttonShiftRot);
+            this.Controls.Add(this.buttonShiftPos);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.numericRotZ);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.numericRotY);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.numericRotX);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.numericPosZ);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.numericPosY);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.numericPosX);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.YmapTabControl);
             this.Controls.Add(this.YmapProjectPathTextBox);
             this.Controls.Add(this.label30);
@@ -604,6 +844,12 @@
             this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPosX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPosY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericPosZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericRotZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericRotY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericRotX)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -657,5 +903,21 @@
         private System.Windows.Forms.TextBox YmapNameTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numericPosX;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown numericPosY;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown numericPosZ;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown numericRotZ;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.NumericUpDown numericRotY;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.NumericUpDown numericRotX;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button buttonShiftPos;
+        private System.Windows.Forms.Button buttonShiftRot;
     }
 }

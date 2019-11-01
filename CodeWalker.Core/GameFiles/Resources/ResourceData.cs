@@ -87,18 +87,18 @@ namespace CodeWalker.GameFiles
             var systemSize = resentry.SystemSize;
             var graphicsSize = resentry.GraphicsSize;
 
-            //if (data != null)
-            //{
-            //    if (systemSize > data.Length)
-            //    {
-            //        systemSize = data.Length;
-            //        graphicsSize = 0;
-            //    }
-            //    else if ((systemSize + graphicsSize) > data.Length)
-            //    {
-            //        graphicsSize = data.Length - systemSize;
-            //    }
-            //}
+            if (data != null)
+            {
+                if (systemSize > data.Length)
+                {
+                    systemSize = data.Length;
+                    graphicsSize = 0;
+                }
+                else if ((systemSize + graphicsSize) > data.Length)
+                {
+                    graphicsSize = data.Length - systemSize;
+                }
+            }
 
             this.systemStream = new MemoryStream(data, 0, systemSize);
             this.graphicsStream = new MemoryStream(data, systemSize, graphicsSize);

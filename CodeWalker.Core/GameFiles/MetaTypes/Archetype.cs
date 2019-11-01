@@ -165,7 +165,7 @@ namespace CodeWalker.GameFiles
             _MloArchetypeDefData = arch.MloArchetypeDef;
         }
 
-        public bool AddEntity(YmapEntityDef ent, int roomIndex)
+        public bool AddEntity(YmapEntityDef ent, int roomIndex, bool portal = false)
         {
             if (ent == null) return false;
 
@@ -178,9 +178,14 @@ namespace CodeWalker.GameFiles
                 return true;
             }
 
-            if (roomIndex > rooms.Length)
+            if (!portal && roomIndex > rooms.Length)
             {
                 throw new ArgumentOutOfRangeException($"Room index {roomIndex} exceeds the amount of rooms in {Name}.");
+            }
+
+            if (portal && roomIndex > portals.Length)
+            {
+                throw new ArgumentOutOfRangeException($"Portal index {roomIndex} exceeds the amount of portals in {Name}.");
             }
 
             var mcEntityDef = new MCEntityDef(ref ent._CEntityDef, this);
@@ -189,7 +194,15 @@ namespace CodeWalker.GameFiles
             AddEntity(ent, mcEntityDef);
 
             // Update the attached objects in the room index specified.
-            AttachEntityToRoom(ent, roomIndex);
+            if (portal)
+            {
+                AttachEntityToPortal(ent, roomIndex);
+            }
+            else
+            {
+                AttachEntityToRoom(ent, roomIndex);
+            }
+            
             return true;
         }
 
@@ -203,6 +216,18 @@ namespace CodeWalker.GameFiles
             var attachedObjs = rooms[roomIndex].AttachedObjects?.ToList() ?? new List<uint>();
             attachedObjs.Add((uint)ent.Index);
             rooms[roomIndex].AttachedObjects = attachedObjs.ToArray();
+        }
+
+        private void AttachEntityToPortal(YmapEntityDef ent, int portalIndex)
+        {
+            if (portalIndex > portals.Length)
+            {
+                return;
+            }
+
+            var attachedObjs = portals[portalIndex].AttachedObjects?.ToList() ?? new List<uint>();
+            attachedObjs.Add((uint)ent.Index);
+            portals[portalIndex].AttachedObjects = attachedObjs.ToArray();
         }
 
         // Adds an entity to the entities array and then set's the index of the
@@ -247,13 +272,37 @@ namespace CodeWalker.GameFiles
                     if (ymapEntityDef != null) ymapEntityDef.Index = index;
                     index++;
                 }
+
                 entities = newentities;
 
-                if (didDel) FixRoomIndexes(delIndex);
+                if (didDel)
+                {
+                    FixRoomIndexes(delIndex);
+                    FixPortalIndexes(delIndex);
+                }
                 return didDel;
             }
 
             return false;
+        }
+
+        private void FixPortalIndexes(int deletedIndex)
+        {
+            foreach (var portal in portals)
+            {
+                List<uint> newAttachedObjects = new List<uint>();
+                if (portal.AttachedObjects == null)
+                    continue;
+
+                foreach(var objIndex in portal.AttachedObjects)
+                {
+                    if (objIndex == deletedIndex) continue;
+                    if (objIndex > deletedIndex)
+                        newAttachedObjects.Add(objIndex - 1); // move the index back so it matches the index in the entitiy array.
+                    else newAttachedObjects.Add(objIndex); // else just add the index to the attached objects.
+                }
+                portal.AttachedObjects = newAttachedObjects.ToArray();
+            }
         }
 
         private void FixRoomIndexes(int deletedIndex)
@@ -302,7 +351,7 @@ namespace CodeWalker.GameFiles
                 portals = new MCMloPortalDef[cportals.Length];
                 for (int i = 0; i < cportals.Length; i++)
                 {
-                    portals[i] = new MCMloPortalDef(meta, cportals[i]);
+                    portals[i] = new MCMloPortalDef(meta, cportals[i]) { Archetype = this, Index = i };
                 }
             }
 
@@ -339,19 +388,58 @@ namespace CodeWalker.GameFiles
             for (int i = 0; i < rooms.Length; i++)
             {
                 MCMloRoomDef r = rooms[i];
-                for (int j = 0; j < r.AttachedObjects.Length; j++)
+                if (r.AttachedObjects != null)
                 {
-                    uint ind = r.AttachedObjects[j];
-                    if (ind == objectIndex)
+                    for (int j = 0; j < r.AttachedObjects.Length; j++)
                     {
-                        room = r;
-                        break;
+                        uint ind = r.AttachedObjects[j];
+                        if (ind == objectIndex)
+                        {
+                            room = r;
+                            break;
+                        }
                     }
+                    if (room != null) break;
                 }
-                if (room != null) break;
             }
 
             return room;
+        }
+
+        public MCMloPortalDef GetEntityPortal(MCEntityDef ent)
+        {
+            int objectIndex = -1;
+            for (int i = 0; i < entities.Length; i++)
+            {
+                MCEntityDef e = entities[i];
+                if (e == ent)
+                {
+                    objectIndex = i;
+                    break;
+                }
+            }
+            if (objectIndex == -1) return null;
+
+            MCMloPortalDef portal = null;
+            for (int i = 0; i < portals.Length; i++)
+            {
+                MCMloPortalDef r = portals[i];
+                if (r.AttachedObjects != null)
+                {
+                    for (int j = 0; j < r.AttachedObjects.Length; j++)
+                    {
+                        uint ind = r.AttachedObjects[j];
+                        if (ind == objectIndex)
+                        {
+                            portal = r;
+                            break;
+                        }
+                    }
+                    if (portal != null) break;
+                }
+            }
+
+            return portal;
         }
     }
 

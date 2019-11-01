@@ -2523,6 +2523,8 @@ namespace CodeWalker.GameFiles
         public CMloPortalDef Data { get { return _Data; } }
         public Vector4[] Corners { get; set; }
         public uint[] AttachedObjects { get; set; }
+        public MloArchetype Archetype { get; set; }
+        public int Index { get; set; }
 
         public Vector3 Center
         {

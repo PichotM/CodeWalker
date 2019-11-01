@@ -84,6 +84,8 @@
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.YmapAddToProjectMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.YmapRemoveFromProjectMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculateExtentsOfAllYmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculateFlagsOfAllYmapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.YtypMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.YtypNameMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
@@ -152,6 +154,9 @@
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.MainToolbar = new System.Windows.Forms.ToolStrip();
+            this.ToolbarSaveButton = new System.Windows.Forms.ToolStripButton();
+            this.ToolbarSaveAllButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolbarNewButton = new CodeWalker.WinForms.ToolStripSplitButtonFix();
             this.ToolbarNewProjectMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -170,9 +175,6 @@
             this.ToolbarOpenYnvMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolbarOpenTrainsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolbarOpenScenarioMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolbarSaveButton = new System.Windows.Forms.ToolStripButton();
-            this.ToolbarSaveAllButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.MainMenu.SuspendLayout();
             this.MainToolbar.SuspendLayout();
             this.SuspendLayout();
@@ -183,6 +185,7 @@
             this.FileMenu,
             this.EditMenu,
             this.ViewMenu,
+            this.ToolsMenu,
             this.YmapMenu,
             this.YtypMenu,
             this.YndMenu,
@@ -190,7 +193,6 @@
             this.TrainsMenu,
             this.ScenarioMenu,
             this.AudioMenu,
-            this.ToolsMenu,
             this.RenderMenu});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
@@ -560,7 +562,9 @@
             this.YmapNewGrassBatchMenu,
             this.toolStripSeparator12,
             this.YmapAddToProjectMenu,
-            this.YmapRemoveFromProjectMenu});
+            this.YmapRemoveFromProjectMenu,
+            this.calculateExtentsOfAllYmapToolStripMenuItem,
+            this.calculateFlagsOfAllYmapsToolStripMenuItem});
             this.YmapMenu.Name = "YmapMenu";
             this.YmapMenu.Size = new System.Drawing.Size(49, 20);
             this.YmapMenu.Text = "Ymap";
@@ -570,19 +574,19 @@
             // 
             this.YmapNameMenu.Enabled = false;
             this.YmapNameMenu.Name = "YmapNameMenu";
-            this.YmapNameMenu.Size = new System.Drawing.Size(199, 22);
+            this.YmapNameMenu.Size = new System.Drawing.Size(230, 22);
             this.YmapNameMenu.Text = "(No .ymap file selected)";
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(196, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(227, 6);
             // 
             // YmapNewEntityMenu
             // 
             this.YmapNewEntityMenu.Enabled = false;
             this.YmapNewEntityMenu.Name = "YmapNewEntityMenu";
-            this.YmapNewEntityMenu.Size = new System.Drawing.Size(199, 22);
+            this.YmapNewEntityMenu.Size = new System.Drawing.Size(230, 22);
             this.YmapNewEntityMenu.Text = "New Entity";
             this.YmapNewEntityMenu.Click += new System.EventHandler(this.YmapNewEntityMenu_Click);
             // 
@@ -590,7 +594,7 @@
             // 
             this.YmapNewCarGenMenu.Enabled = false;
             this.YmapNewCarGenMenu.Name = "YmapNewCarGenMenu";
-            this.YmapNewCarGenMenu.Size = new System.Drawing.Size(199, 22);
+            this.YmapNewCarGenMenu.Size = new System.Drawing.Size(230, 22);
             this.YmapNewCarGenMenu.Text = "New Car Generator";
             this.YmapNewCarGenMenu.Click += new System.EventHandler(this.YmapNewCarGenMenu_Click);
             // 
@@ -598,20 +602,20 @@
             // 
             this.YmapNewGrassBatchMenu.Enabled = false;
             this.YmapNewGrassBatchMenu.Name = "YmapNewGrassBatchMenu";
-            this.YmapNewGrassBatchMenu.Size = new System.Drawing.Size(199, 22);
+            this.YmapNewGrassBatchMenu.Size = new System.Drawing.Size(230, 22);
             this.YmapNewGrassBatchMenu.Text = "New Grass Batch";
             this.YmapNewGrassBatchMenu.Click += new System.EventHandler(this.YmapNewGrassBatchMenu_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(196, 6);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(227, 6);
             // 
             // YmapAddToProjectMenu
             // 
             this.YmapAddToProjectMenu.Enabled = false;
             this.YmapAddToProjectMenu.Name = "YmapAddToProjectMenu";
-            this.YmapAddToProjectMenu.Size = new System.Drawing.Size(199, 22);
+            this.YmapAddToProjectMenu.Size = new System.Drawing.Size(230, 22);
             this.YmapAddToProjectMenu.Text = "Add to Project";
             this.YmapAddToProjectMenu.Click += new System.EventHandler(this.YmapAddToProjectMenu_Click);
             // 
@@ -619,9 +623,23 @@
             // 
             this.YmapRemoveFromProjectMenu.Enabled = false;
             this.YmapRemoveFromProjectMenu.Name = "YmapRemoveFromProjectMenu";
-            this.YmapRemoveFromProjectMenu.Size = new System.Drawing.Size(199, 22);
+            this.YmapRemoveFromProjectMenu.Size = new System.Drawing.Size(230, 22);
             this.YmapRemoveFromProjectMenu.Text = "Remove from Project";
             this.YmapRemoveFromProjectMenu.Click += new System.EventHandler(this.YmapRemoveFromProjectMenu_Click);
+            // 
+            // calculateExtentsOfAllYmapToolStripMenuItem
+            // 
+            this.calculateExtentsOfAllYmapToolStripMenuItem.Name = "calculateExtentsOfAllYmapToolStripMenuItem";
+            this.calculateExtentsOfAllYmapToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.calculateExtentsOfAllYmapToolStripMenuItem.Text = "Calculate Extents of all ymaps";
+            this.calculateExtentsOfAllYmapToolStripMenuItem.Click += new System.EventHandler(this.calculateExtentsOfAllYmapToolStripMenuItem_Click);
+            // 
+            // calculateFlagsOfAllYmapsToolStripMenuItem
+            // 
+            this.calculateFlagsOfAllYmapsToolStripMenuItem.Name = "calculateFlagsOfAllYmapsToolStripMenuItem";
+            this.calculateFlagsOfAllYmapsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.calculateFlagsOfAllYmapsToolStripMenuItem.Text = "Calculate Flags of all ymaps";
+            this.calculateFlagsOfAllYmapsToolStripMenuItem.Click += new System.EventHandler(this.calculateFlagsOfAllYmapsToolStripMenuItem_Click);
             // 
             // YtypMenu
             // 
@@ -1170,6 +1188,32 @@
             this.MainToolbar.Size = new System.Drawing.Size(813, 25);
             this.MainToolbar.TabIndex = 4;
             // 
+            // ToolbarSaveButton
+            // 
+            this.ToolbarSaveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarSaveButton.Enabled = false;
+            this.ToolbarSaveButton.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSaveButton.Image")));
+            this.ToolbarSaveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolbarSaveButton.Name = "ToolbarSaveButton";
+            this.ToolbarSaveButton.Size = new System.Drawing.Size(23, 22);
+            this.ToolbarSaveButton.Text = "Save";
+            this.ToolbarSaveButton.Click += new System.EventHandler(this.ToolbarSaveButton_Click);
+            // 
+            // ToolbarSaveAllButton
+            // 
+            this.ToolbarSaveAllButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarSaveAllButton.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSaveAllButton.Image")));
+            this.ToolbarSaveAllButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolbarSaveAllButton.Name = "ToolbarSaveAllButton";
+            this.ToolbarSaveAllButton.Size = new System.Drawing.Size(23, 22);
+            this.ToolbarSaveAllButton.Text = "Save All";
+            this.ToolbarSaveAllButton.Click += new System.EventHandler(this.ToolbarSaveAllButton_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
             // ToolbarNewButton
             // 
             this.ToolbarNewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1315,32 +1359,6 @@
             this.ToolbarOpenScenarioMenu.Size = new System.Drawing.Size(181, 22);
             this.ToolbarOpenScenarioMenu.Text = "Open Scenario File...";
             this.ToolbarOpenScenarioMenu.Click += new System.EventHandler(this.ToolbarOpenScenarioMenu_Click);
-            // 
-            // ToolbarSaveButton
-            // 
-            this.ToolbarSaveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ToolbarSaveButton.Enabled = false;
-            this.ToolbarSaveButton.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSaveButton.Image")));
-            this.ToolbarSaveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ToolbarSaveButton.Name = "ToolbarSaveButton";
-            this.ToolbarSaveButton.Size = new System.Drawing.Size(23, 22);
-            this.ToolbarSaveButton.Text = "Save";
-            this.ToolbarSaveButton.Click += new System.EventHandler(this.ToolbarSaveButton_Click);
-            // 
-            // ToolbarSaveAllButton
-            // 
-            this.ToolbarSaveAllButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ToolbarSaveAllButton.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSaveAllButton.Image")));
-            this.ToolbarSaveAllButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ToolbarSaveAllButton.Name = "ToolbarSaveAllButton";
-            this.ToolbarSaveAllButton.Size = new System.Drawing.Size(23, 22);
-            this.ToolbarSaveAllButton.Text = "Save All";
-            this.ToolbarSaveAllButton.Click += new System.EventHandler(this.ToolbarSaveAllButton_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
             // 
             // ProjectForm
             // 
@@ -1511,5 +1529,7 @@
         private System.Windows.Forms.ToolStripMenuItem AudioNewInteriorMenu;
         private System.Windows.Forms.ToolStripMenuItem AudioNewInteriorRoomMenu;
         private System.Windows.Forms.ToolStripMenuItem ToolsLODLightsGeneratorMenu;
+        private System.Windows.Forms.ToolStripMenuItem calculateExtentsOfAllYmapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calculateFlagsOfAllYmapsToolStripMenuItem;
     }
 }

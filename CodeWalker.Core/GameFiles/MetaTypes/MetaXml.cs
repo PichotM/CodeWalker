@@ -128,13 +128,13 @@ namespace CodeWalker.GameFiles
             {
                 var cont = new MetaCont(meta);
 
-                WriteNode(sb, 0, cont, meta.RootBlockIndex, 0, XmlTagMode.Structure);
+                WriteNode(sb, 0, cont, meta.RootBlockIndex, 0, XmlTagMode.Structure, 0, (string)meta.Name);
             }
 
             return sb.ToString();
         }
 
-        private static void WriteNode(StringBuilder sb, int indent, MetaCont cont, int blockId, int offset, XmlTagMode tagMode = XmlTagMode.None, MetaName structName = 0)
+        private static void WriteNode(StringBuilder sb, int indent, MetaCont cont, int blockId, int offset, XmlTagMode tagMode = XmlTagMode.None, MetaName structName = 0, string metaName = "")
         {
 
             var block = cont.Meta.GetBlock(blockId);
@@ -168,13 +168,13 @@ namespace CodeWalker.GameFiles
             switch (tagMode)
             {
                 case XmlTagMode.Structure:
-                    OpenTag(sb, indent, name);
+                    OpenTag(sb, indent, name, true, metaName);
                     break;
                 case XmlTagMode.Item:
-                    OpenTag(sb, indent, "Item");
+                    OpenTag(sb, indent, "Item", true, metaName);
                     break;
                 case XmlTagMode.ItemAndType:
-                    OpenTag(sb, indent, "Item type=\"" + name + "\"");
+                    OpenTag(sb, indent, "Item type=\"" + name + "\"", true, metaName);
                     break;
             }
 
@@ -222,7 +222,7 @@ namespace CodeWalker.GameFiles
                         break;
                     case MetaStructureEntryDataType.Boolean:
                         var boolVal = BitConverter.ToBoolean(data, eoffset);
-                        ValueTag(sb, cind, ename, boolVal?"true":"false");
+                        ValueTag(sb, cind, ename, boolVal ? "true" : "false");
                         break;
                     case MetaStructureEntryDataType.ByteEnum:
                         var byteEnumVal = data[eoffset];
@@ -533,7 +533,7 @@ namespace CodeWalker.GameFiles
 
             bool isFlags = (entry.DataType == MetaStructureEntryDataType.IntFlags1) ||
                            (entry.DataType == MetaStructureEntryDataType.IntFlags2);// ||
-                           //(entry.DataType == MetaStructureEntryDataType.ShortFlags);
+                                                                                    //(entry.DataType == MetaStructureEntryDataType.ShortFlags);
 
             if (isFlags)
             {
@@ -702,7 +702,7 @@ namespace CodeWalker.GameFiles
                         break;
                     case PsoDataType.Bool:
                         var boolVal = BitConverter.ToBoolean(data, eoffset);
-                        ValueTag(sb, cind, ename, boolVal?"true":"false");
+                        ValueTag(sb, cind, ename, boolVal ? "true" : "false");
                         break;
                     case PsoDataType.SByte: //was LONG_01h //signed byte?
                         //var long1Val = MetaTypes.SwapBytes(BitConverter.ToUInt64(data, eoffset));
@@ -1188,7 +1188,7 @@ namespace CodeWalker.GameFiles
                     arrEnum.SwapEnd();
                     var enumArr = PsoTypes.GetUintArray(cont.Pso, arrEnum);
                     var enumDef = cont.GetEnumInfo((MetaName)arrEntry.ReferenceKey);
-                    WriteItemArray(sb, enumArr, indent, ename, "enum", (ie)=> {
+                    WriteItemArray(sb, enumArr, indent, ename, "enum", (ie) => {
                         var eval = enumDef?.FindEntry((int)ie);
                         return HashString(eval?.EntryNameHash ?? 0);
                     });
@@ -1599,12 +1599,19 @@ namespace CodeWalker.GameFiles
             sb.Append("</error>");
             sb.AppendLine();
         }
-        public static void OpenTag(StringBuilder sb, int indent, string name, bool appendLine = true)
+        public static void OpenTag(StringBuilder sb, int indent, string name, bool appendLine = true, string metaName = "")
         {
             Indent(sb, indent);
             sb.Append("<");
             sb.Append(name);
-            sb.Append(">");
+            if (string.IsNullOrWhiteSpace(metaName))
+            {
+                sb.Append(">");
+            }
+            else
+            {
+                sb.Append(" name=\"" + metaName + "\">");
+            }
             if (appendLine) sb.AppendLine();
         }
         public static void CloseTag(StringBuilder sb, int indent, string name, bool appendLine = true)

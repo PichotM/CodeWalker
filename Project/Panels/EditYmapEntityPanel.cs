@@ -191,17 +191,23 @@ namespace CodeWalker.Project.Panels
 
             var seltab = EntityTabControl.SelectedTab;
 
-            EntityTabControl.TabPages.Clear();
-
-            EntityTabControl.TabPages.Add(EntityGeneralTabPage);
-            EntityTabControl.TabPages.Add(EntityLodTabPage);
-            EntityTabControl.TabPages.Add(EntityExtensionsTabPage);
-            EntityTabControl.TabPages.Add(EntityPivotTabPage);
-            if (CurrentEntity?.MloInstance != null) EntityTabControl.TabPages.Add(EntityMiloTabPage);
-
-            if (EntityTabControl.TabPages.Contains(seltab))
+            try
             {
-                EntityTabControl.SelectedTab = seltab;
+                EntityTabControl.TabPages.Clear();
+
+                EntityTabControl.TabPages.Add(EntityGeneralTabPage);
+                EntityTabControl.TabPages.Add(EntityLodTabPage);
+                EntityTabControl.TabPages.Add(EntityExtensionsTabPage);
+                EntityTabControl.TabPages.Add(EntityPivotTabPage);
+                if (CurrentEntity?.MloInstance != null) EntityTabControl.TabPages.Add(EntityMiloTabPage);
+
+                if (EntityTabControl.TabPages.Contains(seltab))
+                {
+                    EntityTabControl.SelectedTab = seltab;
+                }
+            } catch
+            {
+                Console.WriteLine("Lol no");
             }
         }
 

@@ -23,6 +23,10 @@ namespace CodeWalker.Project.Panels
         {
             ProjectForm = projectForm;
             InitializeComponent();
+
+            numericUpDownFrom.Value = ProjectForm.NodeFrom;
+            numericUpDownFromTwo.Value = ProjectForm.NodeFrom2;
+            numericUpDownTo.Value = ProjectForm.NodeTo;
         }
 
         public void SetYnd(YndFile ynd)
@@ -219,6 +223,95 @@ namespace CodeWalker.Project.Panels
                 }
             }
             UpdateFormTitleYndChanged();
+        }
+
+        private void ApplyNodeTemplateRecursively(YndNode node, int endNode, YndNode previousNode)
+        {
+            Console.WriteLine("Node: " + node.NodeID + " - previousNode: " + previousNode.NodeID);
+            if (node == previousNode ) return;
+
+            if (node.LinkCount != 0)
+            {
+                node.Flags2 = (byte)BitUtil.UpdateBit(node.Flags2, 7, true);
+                Console.WriteLine("Done on " + node.NodeID + ".");
+                if (node.NodeID == endNode) return;
+
+                foreach(YndLink link in node.Links)
+                {
+                    if (link.Node1 != null && link.Node1 != previousNode && link.Node1 != node)
+                    {
+                        ApplyNodeTemplateRecursively(link.Node1, endNode, node);
+                        break;
+                    }
+                    else if (link.Node2 != null && link.Node2.NodeID != previousNode.NodeID && link.Node2 != node)
+                    {
+                        ApplyNodeTemplateRecursively(link.Node2, endNode, node);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void buttonGo_Click(object sender, EventArgs e)
+        {
+            // Todo fast flag thing
+            int nodeIDFrom = (int)numericUpDownFrom.Value;
+            int nodeIDFromTwo = (int)numericUpDownFromTwo.Value;
+
+            int nodeIDTo = (int)numericUpDownTo.Value;
+
+            Console.WriteLine("From " + nodeIDFrom + " to " + nodeIDTo);
+
+            List<YndNode> nodeList = new List<YndNode>();
+
+            YndFile ynd = Ynd;
+            foreach(YndNode node in ynd.Nodes)
+            {
+                if (node.NodeID == nodeIDFrom)
+                {
+                    node.Flags2 = (byte)BitUtil.UpdateBit(node.Flags2, 7, true);
+
+                    YndLink[] links = node.Links;
+                    YndNode secondNode = new YndNode();
+
+                    foreach(YndLink link in links)
+                    {
+                        if (link.Node1.NodeID == nodeIDFromTwo)
+                        {
+                            secondNode = link.Node1;
+                            break;
+                        }
+                        else if (link.Node2.NodeID == nodeIDFromTwo)
+                        {
+                            secondNode = link.Node2;
+                            break;
+                        }
+                    }
+
+                    Console.WriteLine(secondNode.AreaID + " - " + ynd.AreaID + " || " + secondNode.NodeID);
+                    if (secondNode != null && secondNode.AreaID == ynd.AreaID)
+                    {
+                        ApplyNodeTemplateRecursively(secondNode, nodeIDTo, node);
+                    }
+
+                    Console.WriteLine("Done.");
+                }
+            }
+        }
+
+        private void numericUpDownFrom_ValueChanged(object sender, EventArgs e)
+        {
+            ProjectForm.NodeFrom = (int)this.numericUpDownFrom.Value;
+        }
+
+        private void numericUpDownFromTwo_ValueChanged(object sender, EventArgs e)
+        {
+            ProjectForm.NodeFrom2 = (int)this.numericUpDownFromTwo.Value;
+        }
+
+        private void numericUpDownTo_ValueChanged(object sender, EventArgs e)
+        {
+            ProjectForm.NodeTo = (int)this.numericUpDownTo.Value;
         }
     }
 }
