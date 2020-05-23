@@ -82,13 +82,11 @@ namespace NodReader
                         Vector3 newPos = new Vector3(node.X + (float)OffsetX, node.Y + (float)OffsetY, node.Z * 2);
                         node.NewAreaID = GetAreaIDFromPos(newPos);
 
-                        //Console.WriteLine("Added a new node " + node.NewAreaID + " done.");
                         NodeList.Add(node);
                     }
 
                     string areaidstr = Path.GetFileName(file).ToLowerInvariant().Replace("nodes", "").Replace(".nod.txt", "");
                     LinkList[areaidstr] = nodeInfo.Links;
-                    //NodeList2[areaidstr] = nodeInfo.Nodes;
                 }
             }
 
